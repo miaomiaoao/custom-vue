@@ -23,17 +23,18 @@ module.exports = {
     // publicPath:'http://www.zhufengpeixun.cn'
   },
   plugins: [
-    new HtmlWebpackPlugin({
+    new HtmlWebpackPlugin({ // htmlWebpackPlugin 打包后，会自动把打包文件添加到html文件中
       template: './src/index.html',
       filename: 'index.html',
     }),
+    // mini-css-extract-plugin 将css文件单独打包到一个文件中,设置文件名
     new MiniCssExtractPlugin({
       filename:'css/main.css'
     }),
    
   ],
   externals: {
-      jquery: "$"
+    jquery: "$"
   },
   module: { 
     rules: [
@@ -70,7 +71,14 @@ module.exports = {
           }
         },
         include:path.resolve(__dirname,'src'),
-        exclude:/node_modules/
+        exclude:/node_modules/ 
+      },
+      {
+        test: /\.css$/, 
+        use: [
+          'css-loader',
+          'postcss-loader'
+        ]
       },
       {
         test: /\.css$/,
