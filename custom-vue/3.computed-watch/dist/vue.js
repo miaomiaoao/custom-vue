@@ -64,17 +64,11 @@
     function _typeof(obj) {
       "@babel/helpers - typeof";
 
-      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-        _typeof = function (obj) {
-          return typeof obj;
-        };
-      } else {
-        _typeof = function (obj) {
-          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
-      }
-
-      return _typeof(obj);
+      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+        return typeof obj;
+      } : function (obj) {
+        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      }, _typeof(obj);
     }
 
     function _classCallCheck(instance, Constructor) {
@@ -96,6 +90,9 @@
     function _createClass(Constructor, protoProps, staticProps) {
       if (protoProps) _defineProperties(Constructor.prototype, protoProps);
       if (staticProps) _defineProperties(Constructor, staticProps);
+      Object.defineProperty(Constructor, "prototype", {
+        writable: false
+      });
       return Constructor;
     }
 
@@ -378,7 +375,8 @@
     }
 
     function compileToFunction(template) {
-      // 1.就是将template 转化成ast语法树
+      debugger; // 1.就是将template 转化成ast语法树
+
       var ast = parseHTML(template); // 2.生成render方法 (render方法执行后的返回的结果就是 虚拟DOM)
       // 模板引擎的实现原理 就是 with  + new Function
 
@@ -395,12 +393,14 @@
     var id$1 = 0;
 
     var Dep = /*#__PURE__*/function () {
-      function Dep() {
+      function Dep(prop) {
         _classCallCheck(this, Dep);
 
         this.id = id$1++; // 属性的dep要收集watcher
 
         this.subs = []; // 这里存放着当前属性对应的watcher有哪些
+
+        this.prop = prop; // 记录当前是哪个属性的dep
       }
 
       _createClass(Dep, [{
@@ -450,6 +450,7 @@
       function Watcher(vm, exprOrFn, options, cb) {
         _classCallCheck(this, Watcher);
 
+        debugger;
         this.id = id++;
         this.renderWatcher = options; // 是一个渲染watcher
 
@@ -496,6 +497,7 @@
       }, {
         key: "get",
         value: function get() {
+          debugger;
           pushTarget(this); // 静态属性就是只有一份
 
           var value = this.getter.call(this.vm); // 会去vm上取值  vm._update(vm._render) 取name 和age
@@ -735,6 +737,7 @@
     }
     function mountComponent(vm, el) {
       // 这里的el 是通过querySelector处理过的
+      debugger;
       vm.$el = el; // 1.调用render方法产生虚拟节点 虚拟DOM
 
       var updateComponent = function updateComponent() {
@@ -814,11 +817,11 @@
     });
 
     var Observer = /*#__PURE__*/function () {
-      function Observer(data) {
+      function Observer(key, data) {
         _classCallCheck(this, Observer);
 
         // 给每个对象都增加收集功能 
-        this.dep = new Dep(); // 所有对象都要增加dep
+        this.dep = new Dep(key); // 所有对象都要增加dep
         // Object.defineProperty只能劫持已经存在的属性 （vue里面会为此单独写一些api  $set $delete）
 
         Object.defineProperty(data, '__ob__', {
@@ -850,8 +853,8 @@
         key: "observeArray",
         value: function observeArray(data) {
           // 观测数组
-          data.forEach(function (item) {
-            return observe(item);
+          data.forEach(function (item, index) {
+            return observe("arr".concat(index), item);
           });
         }
       }]);
@@ -873,9 +876,9 @@
 
     function defineReactive(target, key, value) {
       // 闭包  属性劫持
-      var childOb = observe(value); // 对所有的对象都进行属性劫持  childOb.dep 用来收集依赖的
+      var childOb = observe(key, value); // 对所有的对象都进行属性劫持  childOb.dep 用来收集依赖的
 
-      var dep = new Dep(); // 每一个属性都有一个dep
+      var dep = new Dep(key); // 每一个属性都有一个dep
 
       Object.defineProperty(target, key, {
         get: function get() {
@@ -903,7 +906,7 @@
         }
       });
     }
-    function observe(data) {
+    function observe(key, data) {
       // 对这个对象进行劫持
       if (_typeof(data) !== 'object' || data == null) {
         return; // 只对对象进行劫持
@@ -915,10 +918,11 @@
       } // 如果一个对象被劫持过了，那就不需要再被劫持了 (要判断一个对象是否被劫持过，可以增添一个实例，用实例来判断是否被劫持过)
 
 
-      return new Observer(data);
+      return new Observer(key, data);
     }
 
     function initState(vm) {
+      debugger;
       var opts = vm.$options; // 获取所有的选项
 
       if (opts.data) {
@@ -979,7 +983,7 @@
       vm._data = data; // 我将返回的对象放到了_data上
       // 对数据进行劫持 vue2 里采用了一个api defineProperty
 
-      observe(data); // 将vm._data 用vm来代理就可以了 
+      observe('data', data); // 将vm._data 用vm来代理就可以了 
 
       for (var key in data) {
         proxy(vm, '_data', key);
@@ -987,6 +991,7 @@
     }
 
     function initComputed(vm) {
+      debugger;
       var computed = vm.$options.computed;
       var watchers = vm._computedWatchers = {}; // 将计算属性watcher保存到vm上
 
@@ -1017,6 +1022,7 @@
     function createComputedGetter(key) {
       // 我们需要检测是否要执行这个getter
       return function () {
+        debugger;
         var watcher = this._computedWatchers[key]; // 获取到对应属性的watcher
 
         if (watcher.dirty) {
@@ -1043,6 +1049,7 @@
 
         vm.$options = mergeOptions(this.constructor.options, options); // 将用户的选项挂载到实例上
 
+        debugger;
         callHook(vm, 'beforeCreate'); // 内部调用的是beforeCreate 写错了就不执行了
         // 初始化状态, 初始化计算属性,watch
 
@@ -1055,6 +1062,7 @@
       };
 
       Vue.prototype.$mount = function (el) {
+        debugger;
         var vm = this;
         el = document.querySelector(el);
         var ops = vm.$options;
@@ -1100,9 +1108,10 @@
     initGlobalAPI(Vue); // 最终调用的都是这个方法
 
     Vue.prototype.$watch = function (exprOrFn, cb) {
-      // firstname
+      debugger; // firstname
       // ()=>vm.firstname
       // firstname的值变化了 直接执行cb函数即可
+
       new Watcher(this, exprOrFn, {
         user: true
       }, cb);

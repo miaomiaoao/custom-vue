@@ -13,6 +13,8 @@ export function createElementVNode(vm, tag, data, ...children) {
         delete data.key
     }
 
+    debugger;
+
     if (isReservedTag(tag)) {
         return vnode(vm, tag, key, data, children);
     } else {
@@ -23,6 +25,7 @@ export function createElementVNode(vm, tag, data, ...children) {
     }
 }
 function createComponentVnode(vm, tag, key, data, children, Ctor) {
+  debugger;
     if (typeof Ctor === 'object') {
         Ctor = vm.$options._base.extend(Ctor)
         // Ctor = Vue.extend(Ctor)

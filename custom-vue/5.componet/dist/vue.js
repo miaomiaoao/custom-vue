@@ -107,17 +107,11 @@
     function _typeof(obj) {
       "@babel/helpers - typeof";
 
-      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-        _typeof = function (obj) {
-          return typeof obj;
-        };
-      } else {
-        _typeof = function (obj) {
-          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
-      }
-
-      return _typeof(obj);
+      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+        return typeof obj;
+      } : function (obj) {
+        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      }, _typeof(obj);
     }
 
     function _classCallCheck(instance, Constructor) {
@@ -139,6 +133,9 @@
     function _createClass(Constructor, protoProps, staticProps) {
       if (protoProps) _defineProperties(Constructor.prototype, protoProps);
       if (staticProps) _defineProperties(Constructor, staticProps);
+      Object.defineProperty(Constructor, "prototype", {
+        writable: false
+      });
       return Constructor;
     }
 
@@ -676,6 +673,8 @@
         delete data.key;
       }
 
+      debugger;
+
       for (var _len = arguments.length, children = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
         children[_key - 3] = arguments[_key];
       }
@@ -692,6 +691,8 @@
     }
 
     function createComponentVnode(vm, tag, key, data, children, Ctor) {
+      debugger;
+
       if (_typeof(Ctor) === 'object') {
         Ctor = vm.$options._base.extend(Ctor); // Ctor = Vue.extend(Ctor)
       }
@@ -1204,6 +1205,8 @@
 
     function initState(vm) {
       var opts = vm.$options; // 获取所有的选项
+
+      debugger;
 
       if (opts.data) {
         initData(vm);

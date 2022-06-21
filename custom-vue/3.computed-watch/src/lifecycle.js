@@ -72,6 +72,7 @@ export function initLifeCycle(Vue){
 }
 
 export function mountComponent(vm,el){ // 这里的el 是通过querySelector处理过的
+    debugger;
     vm.$el = el;
 
     // 1.调用render方法产生虚拟节点 虚拟DOM

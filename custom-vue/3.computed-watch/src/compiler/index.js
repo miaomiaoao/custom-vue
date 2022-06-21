@@ -61,6 +61,8 @@ function codegen(ast) {
 }
 export function compileToFunction(template) {
 
+    debugger;
+
     // 1.就是将template 转化成ast语法树
     let ast = parseHTML(template);
 

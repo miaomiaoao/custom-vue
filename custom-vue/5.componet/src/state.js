@@ -4,6 +4,7 @@ import Watcher, { nextTick } from './observe/watcher'
 
 export function initState(vm) {
     const opts = vm.$options; // 获取所有的选项
+    debugger;
     if (opts.data) {
         initData(vm);
     }

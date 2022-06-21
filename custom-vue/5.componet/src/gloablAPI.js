@@ -8,7 +8,7 @@ import { mergeOptions } from './utils'
 export function initGlobalAPI(Vue) {
     // 静态方法
     Vue.options = {
-        _base: Vue
+      _base: Vue
     }
     Vue.mixin = function (mixin) {
         // 我们期望将用户的选项和 全局的options进行合并 '

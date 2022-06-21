@@ -2,11 +2,11 @@ import { newArrayProto } from "./array";
 import Dep from "./dep";
 
 class Observer{
-    constructor(data){
+    constructor(key, data){
 
         // 给每个对象都增加收集功能 
         
-        this.dep = new Dep(); // 所有对象都要增加dep
+        this.dep = new Dep(key); // 所有对象都要增加dep
 
 
         // Object.defineProperty只能劫持已经存在的属性 （vue里面会为此单独写一些api  $set $delete）
@@ -29,7 +29,7 @@ class Observer{
         Object.keys(data).forEach(key=> defineReactive(data,key,data[key]))
     }
     observeArray(data){ // 观测数组
-        data.forEach(item=> observe(item))
+        data.forEach((item, index) => observe(`arr${index}`, item))
     }
 }
 // 深层次嵌套会递归，递归多了性能差，不存在属性监控不到，存在的属性要重写方法  vue3-> proxy
@@ -44,8 +44,8 @@ function dependArray(value){
 }
 
 export function defineReactive(target,key,value){ // 闭包  属性劫持
-    let childOb = observe(value); // 对所有的对象都进行属性劫持  childOb.dep 用来收集依赖的
-    let dep = new Dep(); // 每一个属性都有一个dep
+    let childOb = observe(key, value); // 对所有的对象都进行属性劫持  childOb.dep 用来收集依赖的
+    let dep = new Dep(key); // 每一个属性都有一个dep
     Object.defineProperty(target,key,{
         get(){ // 取值的时候 会执行get
             if(Dep.target){
@@ -67,7 +67,7 @@ export function defineReactive(target,key,value){ // 闭包  属性劫持
         }
     })
 }
-export function observe(data){
+export function observe(key, data){
     // 对这个对象进行劫持
     if(typeof data !== 'object' || data == null){
         return; // 只对对象进行劫持
@@ -77,6 +77,6 @@ export function observe(data){
     }
     // 如果一个对象被劫持过了，那就不需要再被劫持了 (要判断一个对象是否被劫持过，可以增添一个实例，用实例来判断是否被劫持过)
 
-    return new Observer(data);
+    return new Observer(key, data);
 
 }

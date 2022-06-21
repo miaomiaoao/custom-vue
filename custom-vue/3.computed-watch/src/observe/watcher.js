@@ -7,6 +7,7 @@ let id = 0;
 // 每个属性有一个dep （属性就是被观察者） ， watcher就是观察者（属性变化了会通知观察者来更新） -》 观察者模式
 class Watcher { // 不同组件有不同的watcher   目前只有一个 渲染根实例的
     constructor(vm, exprOrFn, options,cb) {
+      debugger;
         this.id = id++;
         this.renderWatcher = options; // 是一个渲染watcher
 
@@ -43,6 +44,7 @@ class Watcher { // 不同组件有不同的watcher   目前只有一个 渲染�
         this.dirty = false;
     }
     get() {
+      debugger;
         pushTarget(this)// 静态属性就是只有一份
         let value = this.getter.call(this.vm); // 会去vm上取值  vm._update(vm._render) 取name 和age
         popTarget() // 渲染完毕后就清空

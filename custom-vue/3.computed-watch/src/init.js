@@ -13,7 +13,7 @@ export function initMixin(Vue) { // 就是给Vue增加init方法的
         // 我们定义的全局指令和过滤器.... 都会挂载到实力上
         vm.$options = mergeOptions(this.constructor.options,options); // 将用户的选项挂载到实例上
 
-
+        debugger;
         callHook(vm,'beforeCreate'); // 内部调用的是beforeCreate 写错了就不执行了
         // 初始化状态, 初始化计算属性,watch
         initState(vm);
@@ -24,6 +24,7 @@ export function initMixin(Vue) { // 就是给Vue增加init方法的
         }
     }
     Vue.prototype.$mount = function (el) {
+      debugger;
         const vm = this;
         el = document.querySelector(el);
         let ops = vm.$options

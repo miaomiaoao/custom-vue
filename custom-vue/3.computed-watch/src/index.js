@@ -18,6 +18,7 @@ initGlobalAPI(Vue)
 
 // 最终调用的都是这个方法
 Vue.prototype.$watch = function (exprOrFn, cb) {
+  debugger;
     // firstname
     // ()=>vm.firstname
 
