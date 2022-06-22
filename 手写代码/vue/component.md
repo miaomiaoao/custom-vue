@@ -1,0 +1,1 @@
+- 组件的钩子函数 init prepatch insert destroy

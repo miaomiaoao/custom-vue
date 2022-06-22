@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    header,
+    footer {
+      background: red;
+    }
+
+    .main-content,
+    .left,
+    .right {
+      float: left;
+    }
+
+    .left,
+    .right {
+      background: blue;
+      width: 200px;
+    }
+
+    .main {
+      margin: 0 200px;
+    }
+
+    .main-content {
+      width: 100%;
+      background: yellow;
+    }
+
+    .left {
+      margin-left: -100%;
+    }
+    
+    .right {
+      margin-left: -200px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- 使用float+定位 实现三栏布局 -->
+  <header>头部</header>
+  <div class="main-content">
+    <div class="main">中间</div>
+  </div>
+  <div class="left">左</div>
+  <div class="right">右</div>
+  <footer>底部</footer>
+</body>
+
+</html>
