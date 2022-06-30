@@ -1,32 +1,34 @@
-这篇文章写的非常全面
+/**
+ *[1, [2, [3]], 4]
+ 思路：
+ 定义空数组， arr = []。 遍历当前数组
+ 如果item非数组， 则累加到arr
+ 如果item是数组， 则遍历之后累加到arr
+ 递归
+ */
 
-[1, [2, [3]], 4]
-思路：
-● 定义空数组，arr = []。遍历当前数组
-● 如果item非数组，则累加到arr
-● 如果item是数组，则遍历之后累加到arr
-递归
-function flattenDeep2(arr: any[]): any[] {
-  const res: any[] = []
+function flattenDeep2(arr) {
+  const result = []
   arr.forEach(item => {
     if(Array.isArray(item)) {
       const flattenItem = flattenDeep2(item)
-      res = res.contact(flatItem)
+      result = res.contact(flattenItem)
     } else {
-      res = res.contact(item)
+      result = res.contact(item)
     }
   })
-  return res
+  return result
 }
-reduce
+
+// reduce
 function flatten() {
-    // 空数组作为初始值 pre是累加值
-    return arr.reduce((pre, cur) => {
-        return pre.concat(Array.isArray(cur) ? flatten2(cur) : cur)
-        }, [])
-    }
+  // 空数组作为初始值 pre是累加值
+  return arr.reduce((pre, cur) => {
+    return pre.concat(Array.isArray(cur) ? flatten(cur) : cur)
+  }, [])
+}
  
-传入扁平层数
+// 传入扁平层数
 // reduce + 递归
 function flat(arr, num = 1) {
   if (num > 0) {
@@ -37,10 +39,10 @@ function flat(arr, num = 1) {
     return arr.slice() // 复制了一个arr
   }
 }
-const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
+let arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
 flat(arr, Infinity);
 // [1, 2, 3, 4, 1, 2, 3, 1, 2, 3, 1, 2, 3, 5, "string", { name: "弹铁蛋同学" }];
-原型上重写递归
+// 原型上重写递归
 Array.prototype.fakeFlat = function(num = 1) {
   if (!Number(num) || Number(num) < 0) {
     return this;
@@ -56,6 +58,6 @@ Array.prototype.fakeFlat = function(num = 1) {
   }
   return arr;
 };
-const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
+let arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
 arr.fakeFlat(Infinity)
 // [1, 2, 3, 4, 1, 2, 3, 1, 2, 3, 1, 2, 3, 5, "string", { name: "弹铁蛋同学" }];

@@ -5,6 +5,9 @@
  *     this.next = null;
  * }
  */
+
+
+// 1 -> 2 -> 3 -> 4
 /**
  * @param {ListNode} head
  * @return {ListNode}

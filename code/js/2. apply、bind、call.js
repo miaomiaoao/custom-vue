@@ -1,15 +1,17 @@
-// apply，call，bind都可以改变this的指向(除了箭头函数哈)
-// bind改变后不执行。而是返回一个新的函数
+/**
+ * apply，call，bind都可以改变this的指向(除了箭头函数哈)
+   bind改变后不执行。而是返回一个新的函数
 
-// call、apply改变this指向后立即指向。但是接收的参数不同。call(context, arg1, arg2....)  apply(context, 数组 | 类数组)
-// bind
-// ● 返回一个新函数，但是不执行
-// ● 绑定this和部分参数
-// ● 如果是箭头函数，无法改变this，只能改变参数
-// ● bind在调用时可接收参数，返回的函数执行时也可以接收参数
+   call、apply改变this指向后立即指向。但是接收的参数不同。call(context, arg1, arg2....)  apply(context, 数组 | 类数组)
+   bind
+   返回一个新函数，但是不执行
+   绑定this和部分参数
+   如果是箭头函数，无法改变this，只能改变参数
+   bind在调用时可接收参数，返回的函数执行时也可以接收参数
 
-
-// 但是bind返回的函数，又可以做为构造函数。此时就是作为实例的情况，bind指定的this会失效(根据new函数的实现原理)
+  但是bind返回的函数，又可以做为构造函数。此时就是作为实例的情况，bind指定的this会失效(根据new函数的实现原理)
+ * 
+ */
 var value = 2;
 
 var foo = {
@@ -45,10 +47,12 @@ Function.prototype.customBind = function(context, ...bindArgs) {
     
     const newArgs = bindArgs.contact(args) // 拼接参数
     
+    // 执行函数的时候，如果是将当前函数当做构造函数
     const _context = this instanceof fn ? this: Object(context)
     
     return self.apply(_context, newArgs)
   }
+  
   if (this.prototype) {
     // 复制源函数的prototype给fn  一些情况下函数没有prototype 比如箭头函数
     fn.prototype = Object.create(this.prototype)
@@ -58,7 +62,6 @@ Function.prototype.customBind = function(context, ...bindArgs) {
 }
 
 
-call
 Function.prototype.customCall = function(context, ...args) {
   if(context === null || context === undefined) {
     context = window
@@ -72,6 +75,8 @@ Function.prototype.customCall = function(context, ...args) {
   // 函数this指向，隐式绑定到context上 这句没看懂!!!!
   // 我发现，调用customCall时，this就是指向当前的函数。相当于把sum的this，赋值给obj
   // 为什么用symbol生成一个属性，可能是怕跟上下文中本身的属性重复吧
+
+  // 只有这样赋值，在执行的时候，才会在执行的时候能取到context上面的参数
   context[temp] = this
   
   // 执行函数
@@ -97,9 +102,9 @@ sum.customCall(obj, 9, 10)
 
 // apply
 // 类数组
-// ● 具有length属性
-// ● 其他属性(索引)为非负数(对象中的索引会被当做字符串来处理)
-// ● 不具有所有数组所具有的方法
+// 具有length属性
+// 其他属性(索引)为非负数(对象中的索引会被当做字符串来处理)
+// 不具有所有数组所具有的方法
 
 // args是数组或者类数组
 Function.prototype.customApply = function(context, args) {

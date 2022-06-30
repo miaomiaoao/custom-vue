@@ -1,8 +1,8 @@
 
 
 
-深度优先遍历
-深度优先是中序遍历
+// 深度优先遍历
+// 深度优先是中序遍历
 function visitNode(n: Node) {
   if(n instanceof Comment) {
     // 注释
@@ -32,8 +32,8 @@ function depthFirstTraverse(root: Node) {
     })
   }
 }
-广度优先遍历
-广度优先就是一层一层遍历。广度优先遍历用队列
+// 广度优先遍历
+// 广度优先就是一层一层遍历。广度优先遍历用队列
 function breadthFirstTraverse(root: Node) {
   const queue: Node[] = []
   // 根节点如队列
