@@ -86,6 +86,9 @@ destroyed  √  销毁后触发
 errorCaptured 捕获错误
 
 
+什么时候会调用到destroyed  手动调用$destroyed 路由切换 v-if切换组件 :is动态组件
+
+
 > 一般最多的在mounted （created不是比mounted早吗？ 代码是同步执行的，请求是异步的）  服务端渲染不都是在created中，真正使用服务端渲染的时候 基本上也不会使用created （服务端没有dom 也没有mounted钩子）  在哪里发请求主要看你要做什么事（请求的时候获取dom元素，都写在这里就可以的）
 
 
@@ -252,13 +255,51 @@ v-if (控制是否渲染)  / v-show(控制的是样式  viisbility:hidden  displ
 ## 23.v-if，v-model，v-for的实现原理
 - v-if会被编译成 三元表达式
 - v-for 会被编译成_l 循环
+  renderList函数 可能是数字、字符串、数组 直接用for循环拼字符串 如果是对象就用迭代器循环
 - v-model  干什么的？  放在表单元素上可以实现双向绑定 ， 放在组件上就不一样了
-    - v-model 放在不同的元素上会编译出不同的结果，针对文本来说会处理文本 （会被编译成 value + input + 指令处理）  value 和 input实现双向绑定阻止中文的触发  指令作用就是处理中文输入完毕后 手动触发更新 
+    - v-model 放在不同的元素上会编译出不同的结果，针对文本来说会处理文本 （会被编译成 value + input + 指令处理）  value 和 input实现双向绑定阻止中文的触发  指令作用就是处理中文输入完毕后 手动触发更新.
+    
+    - v-model指令内部，针对checkbox、radio、textarea、select等做了特殊处理
 
     - v-model 绑定到组件上  这里会编译一个 model对象 组件在创建虚拟节点的时候会里有这个 对象。 会看一下里面是否有自定义的prop和event ，如果没有则会被解析成 value + input的语法糖
+  
+```js
+<input type="text" v-model="msg">
+编译成
+
+
+function render() {
+  with(this) {
+    return _c('input', {
+      directives: [{
+        name: 'model',
+        rawNamme: 'v-model',
+        value: (msg),
+        expression: 'msg'
+      }],
+      attrs: {
+        type: 'text'
+      },
+      domProps: {
+        value: (msg)
+      },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) return; // 对中文进行处理 中文输入完，使用指令更新。有个中文输入完成的事件
+          msg = $event.target.value
+        }
+      }
+    })
+  }
+}
+```
 
 ## 27.Vue中.sync修饰符的作用，用法及实现原理
-- 和v-model 一样，这个api是为了实现状态同步的， 这个东西在vue3中被移除了
+- 和v-model 一样，这个api是为了实现状态同步的， 这个东西在vue3中被移除了，因为不好用
+  
+如果要同步两个属性,不能写成v-model="msg" v-model="info"
+
+语法糖： 属性和事件的语法糖
 
 
 ```js
@@ -283,7 +324,7 @@ function render() {
 - 默认调用插件   默认调用插件的install方法
 - vue-router和vuex里面的package的依赖里面没有vue是吧。是通过参数穿进去的
 
-## 30.组件中写name选项有哪些好处及作用？
+## 30.组件中写name选项有哪些好处及作用？v
 
 ### 可以实现递归组件
 - 在vue中有name属性的组件可以被递归调用  （在写模板语法的时候 我们可以通过name属性来递归调用自己）
@@ -318,6 +359,11 @@ function render() {
 - keep-alive的原理是默认缓存加载过的组件对应的实例 内部采用了LRU算法
 - 下次组件切换加载的时候 此时会找到对应缓存的节点来进行初始化，但是会采用上次缓存$el来触发 （不用在做将虚拟节点转化成真实节点了）  通过init -》 prepatch中了
 - 更新和销毁会触发actived 和 deactived
+
+被缓存过的节点都会有个属性 keepAlive  keepAlive true 因为渲染的时候回去看keepAlive属性
+
+最大可以缓存多少组件？有一个max参数
+keep-alive 有 include 和 exclude方法 可以缓存多少组件和排除哪些组件
 
 
 ## 28.如何理解自定义指令
