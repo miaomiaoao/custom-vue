@@ -118,7 +118,9 @@ class CustomPromise {
 
   then(onFullFilled, onRejected) {
     onFullFilled = typeof onFullFilled === 'function' ? onFullFilled : v => v
-    onRejected = typeof onRejected === 'function' ? onRejected : err => throw err
+    onRejected = typeof onRejected === 'function' ? onRejected : err => {
+      throw new Error(err)
+    };
     // new Promise要等到里面代码都执行完才会返回promise2
     let promise2 = new CustomPromise((resolve, reject) => {
       if (this.status === FULLFILLED) {
