@@ -40,9 +40,3 @@ function objectFactory(fn, ...args) {
   
   return res instanceof Object ? res : obj
 }
-
-
-function fn(name) {
-  this.name = name
-}
-const res = objectFactory(fn, 'xuying')
