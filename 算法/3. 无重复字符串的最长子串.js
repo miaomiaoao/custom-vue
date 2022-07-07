@@ -8,7 +8,7 @@
  * @return {number}
  */
 
- function lengthOfLongestSubstring(str) {‘{？}
+ function lengthOfLongestSubstring(str) {
   let result = 0;
   let map = {};
 
