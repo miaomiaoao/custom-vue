@@ -51,6 +51,9 @@ class Promise {
       onRejected(this.reason)
     }
 
+
+    // 这段代码是怎么来的？好像是因为异步执行？
+
     if (this.status === PENDING) {
       this.onFullfilledCbs.push(() => {
         // todo
