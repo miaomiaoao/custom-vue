@@ -136,6 +136,8 @@ let sandbox = new SnapShotSandbox()
 
 2. proxy
 微应用中的script内容都会加with(global)来执行，这里global是全局对象，如果是proxy的隔离方式那么他就是下面新创建的proxy对象。我们知道with可以改变里面代码的作用域，也就是我们的微应用全局对象会变成下面的这个proxy。当设置属性的时候会设置到proxy对象里，在读取属性时先从proxy里找，没找到再从原始的window中找。也就是你在微应用里修改全局对象的属性时不会在window中修改，而是在proxy对象中修改。因为不会破坏window对象，这样就会隔离各个应用之间的数据影响。
+
+修改window的时候，实际上是在修改proxy
 ```js
 class ProxySandbox {
   constructor() {
@@ -167,7 +169,12 @@ window.a = 1;
   console.log(window.a)
 })(sandbox2.proxy);
 ```
-
+### 样式隔离
+- 子应用之间，切换应用时，他会采用动态样式表 加载的时候添加样式 卸载应用的时候删除样式
+- 主应用与子应用之间隔离
+  1. bem(block element modifier)
+  2. css module(并不是完全隔离)
+  3. shadow DOM  vedio标签 快进 就是shadow dom  会默认把body标签变成div  shadow真实存在但是无法访问
 
 ## 常见问题
 1. 子应用之间如何跳转
@@ -185,3 +192,8 @@ headers: {
   - mount：应用每次进入都会调用 mount 方法，通常我们在这里触发应用的渲染方法。
 
   - unmount：应用每次 切出/卸载 会调用的方法，通常在这里我们会卸载微应用的应用实例。
+
+4. qiankun上线
+  独立打包，独立上线，上线之后ngix做代理，解决跨域问题
+
+## qiankun 源码
