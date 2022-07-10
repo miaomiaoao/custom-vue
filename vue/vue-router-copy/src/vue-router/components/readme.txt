@@ -1,0 +1,1 @@
+link和view对应着router-view 和 router-link两个组件
