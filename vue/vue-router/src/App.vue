@@ -15,8 +15,27 @@
 
 <script>
 
+function mapState(stateArr) {
+  let obj = {}
+
+  for (let i = 0; i < stateArr.length; i++) {
+    let stateName = stateArr[i]
+    obj[stateName] = function() {
+      return this.$storage.state[stateName]
+    }
+  }
+
+  return obj
+}
+
+
 export default {
-  name: 'App'
+  name: 'App',
+  // 辅助函数
+  computed: {
+    ...mapState(['age'])
+  }
+
 }
 </script>
 

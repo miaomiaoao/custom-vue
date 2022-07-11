@@ -2,6 +2,7 @@
 // 2. Vuex中有个Store类
 // 3. 
 import { Store, install } from './store'
+export * from './helpers'
 
 export default {
   Store,

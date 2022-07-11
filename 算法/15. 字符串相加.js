@@ -21,7 +21,6 @@
  */
 
 function addString(num1, num2) {
-  debugger;
   let len1 = num1.length
   let len2 = num2.length
   temp = 0

@@ -1,16 +1,21 @@
 import { forEachValue } from "../util"
+import Module from "./module"
 
 class ModuleCollection {
   constructor(options) {
     this.register([], options) // 树 + 栈
   }
 
+  getNamespaced(path) {
+    let root = this.root // 从根模块找起来
+
+    return path.reduce((str, key) => {
+      root = root.getChild(key) // 不停的去找当前的模块
+      return str + root.namespced ? key + '/' : ''
+    }, '')
+  }
   register(path, rootModule) {
-    let newModule = {
-      _raw: rootModule,
-      _children: {},
-      state: rootModule.state
-    }
+    let newModule = new Module(rootModule)
 
     if (path.length === 0) {
       // 根模块
@@ -20,9 +25,9 @@ class ModuleCollection {
       // [b]
       // 如果是[a,c] 先找a，再找c
       path.slice(0, -1).reduce((memo, current) => {
-        return memo._children[current]
+        return memo.getChild(current)
       }, this.root)
-      parent._children[path[path.length - 1]] = newModule
+      parent.addChild(path[path.length - 1], newModule)
 
       // 错误写法
       // this.root._children[path[path.length - 1]] = newModule
