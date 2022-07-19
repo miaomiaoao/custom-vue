@@ -11,7 +11,7 @@
 /**
  * 解题思路：
  * 模拟竖式加法，遍历两个字符串，从个位开始两个数相加。定义一个temp来保存两个数的和。
- * 将temp与10取余，得到的值加载结果res中，如果有进位，就将temp赋值为1，方便前面的位相加。
+ * 将temp与10取余，得到的值加在结果res中，如果有进位，就将temp赋值为1，方便前面的位相加。
  * 最后判断相加完之后，temp是否等于1，如果是就进一位，在结果前面加一个1。
  */
 
@@ -23,8 +23,8 @@
 function addString(num1, num2) {
   let len1 = num1.length
   let len2 = num2.length
-  temp = 0
-  res = ''
+  temp = 0 // temp来存储进位
+  res = '' // res存储最后的值
 
   while(len1 || len2) {
     if (len1) {

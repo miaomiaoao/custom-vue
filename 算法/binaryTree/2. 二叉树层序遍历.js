@@ -15,6 +15,8 @@
   *  3) 如果该节点的右子树不为空，就将其放入队列中
   *  4) 遍历完改层之后，就遍历下一层
   */
+
+ // 关键词 bfs, 加一个存层数的变量
  function levelOrder(root) {
    if (!root) return []
    let queue = [root]
