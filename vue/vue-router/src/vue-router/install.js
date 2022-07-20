@@ -3,6 +3,7 @@ import Link from "./components/link"
 import View from "./components/view"
 // 安装插件
 export default function install(Vue, options) {
+  debugger;
   // 给vue挂一些全局组件
   // vue-router中的核心
   // 插件，一般用于往全局挂载全局指令、过滤器、原型方法

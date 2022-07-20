@@ -31,6 +31,16 @@ function deepClone(obj, hash = new WeakMap()) {
   return cloneObj
 }
 
+// 循环引用的代码
+var obj = {
+  name: 'xuxu',
+  age: 18,
+  c: ''
+}
+
+obj.c = obj
+
+
 // 可能对象会循环引用, 如果对象已经拷贝过了，就不再拷贝。
 // es6中的weakMap, 若引用
 // 什么是尾递归优化？？？

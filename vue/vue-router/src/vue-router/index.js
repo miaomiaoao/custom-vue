@@ -4,6 +4,7 @@ import BrowserHistory from './history/history'
 import HashHistory from './history/hash'
 class VueRouter {
   constructor(options) {
+    debugger;
     // 根据用户的配置 和当前请求的路径  渲染对应的组件
 
     // 创建匹配器  可用于后序的匹配操作

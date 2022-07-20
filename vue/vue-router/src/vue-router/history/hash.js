@@ -17,12 +17,14 @@ class HashHistory extends History {
   constructor(router) {
     super(router)
     this.router = router
+    debugger;
 
     // 确保hash模式下 有一个/路径, hash模式默认加#
     ensureSlash()
   }
 
   getCurrentLocation() {
+    debugger;
     // 拿到最新的hash值
     return getHash()
   }

@@ -10,7 +10,8 @@ class customPromise {
     try {
       executor(this.resolve, this.reject)
     } catch(e) {
-      reject(e)
+      console.log(e)
+      this.reject(e)
     }
   }
 
