@@ -5,6 +5,7 @@
     <router-link to="/about/a">about-a</router-link>
     <router-link to="/about/b">about-b</router-link>
     <router-view></router-view>
+    <button @click="goPage">去关于页面</button>
     <!-- {{ $store.state.age }}
     {{ $store.getters.myAge }}
     <button @click="$store.commit('changeAge', 5)">更新年龄</button>
@@ -14,6 +15,7 @@
     b模块的年龄：{{ $store.state.b.age }} -->
   </div>
 </template>
+
 
 <script>
 
@@ -36,6 +38,13 @@ export default {
   // 辅助函数
   computed: {
     ...mapState(['age'])
+  },
+  methods: {
+    goPage() {
+      console.log(this.$router)
+      console.log(this.$route)
+      this.$router.push({ path: '/about/a'})
+    }
   }
 
 }

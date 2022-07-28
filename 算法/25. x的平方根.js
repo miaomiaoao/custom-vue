@@ -26,3 +26,4 @@ function mySqart(x) {
   return right
 }
 
+console.log(mySqart(8))
