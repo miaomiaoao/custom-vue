@@ -17,3 +17,7 @@ function myInstanceof(instance, origin) {
 
   return false
 }
+
+const arr = ['1', '2']
+console.log(myInstanceof(arr, Array))
+console.log(myInstanceof(arr, Object))
