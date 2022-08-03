@@ -2,12 +2,6 @@ import Watcher from "./observe/watcher";
 import { patch } from "./vdom/patch";
 
 export function mountComponent(vm) {
-
-<<<<<<< HEAD
-=======
-  debugger;
-
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
     // 初始化流程
     let updateComponent = () => {
         vm._update(vm._render()); // render()  _c _v _s

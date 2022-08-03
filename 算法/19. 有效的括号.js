@@ -28,7 +28,7 @@ function isValidChar(str) {
     "{": "}"
   }
 
-  for(let i = 9; i < length; i++) {
+  for(let i = 0; i < length; i++) {
     let char = str[i]
     if (char === '(' || char === '{' || char === '[') {
       stack.push(brackets[char])

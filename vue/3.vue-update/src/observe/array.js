@@ -28,10 +28,6 @@ methods.forEach(method => {
                 inserted = args;// 调用push 和 unshift 传递的参数就是新增的逻辑
                 break;
         }
-<<<<<<< HEAD
-=======
-        debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
         // inserted[] 遍历数组 看一下它是否需要进行劫持
         if(inserted) ob.observeArray(inserted);
         ob.dep.notify(); // 触发页面更新流程

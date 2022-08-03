@@ -28,19 +28,11 @@ class Watcher{
     }
     update(){ // 每次更新数据都会同步调用这个update方法，我可以将更新的逻辑缓存起来，等会同步更新数据的逻辑执行完毕后，依次调用 (去重的逻辑)
         console.log('缓存更新')
-<<<<<<< HEAD
-=======
-        debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
         queueWatcher(this);
         // 可以做异步更新处理
         // this.get(); // vue.nextTick  [fn3]
     }
     run(){
-<<<<<<< HEAD
-=======
-      debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
         console.log('真正执行更新')
         this.get(); // render() 取最新的vm上的数据
     }

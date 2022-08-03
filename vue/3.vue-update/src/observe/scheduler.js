@@ -14,10 +14,6 @@ function flushSchedulerQueue(){
 
 let pending = false;
 export function queueWatcher(watcher) { // watcher1 watcher1 watcher1 watcher1  watcher2
-<<<<<<< HEAD
-=======
-  debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
     // 一般情况下 写去重 可以采用这种方式 ，如果你不使用set的时候
     let id = watcher.id
     if (has[id] == null) {

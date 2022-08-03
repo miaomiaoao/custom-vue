@@ -15,24 +15,29 @@ export function mountComponent(vm) {
     }, true);
     callHook(vm,'mounted');
 }
+
+// render函数编译过程
+/**
+ * 1. 如果是传了一个template模板的话，将模板转化为ast树
+ * 2. ast树生成render函数 render执行with + Function
+ * 3. 调用render函数返回对应的虚拟节点
+ * 4. 调用update函数，传入虚拟节点，执行diff算法
+ * 5. diff算法实际上是执行源码中的patch方法
+ * 
+ */
 export function lifeCycleMixin(Vue) {
     Vue.prototype._update = function(vnode) {
-<<<<<<< HEAD
-=======
-      debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
-        const vm = this;
-        let preVnode = vm._prevVnode;
-        // 第一次渲染 是根据虚拟节点 生成真实节点，替换掉原来的节点
-        vm._prevVnode = vnode
-        // 如果是第二次 生成一个新得虚拟节点 ，和老的虚拟节点进行对比
+      const vm = this;
+      let preVnode = vm._prevVnode;
+      // 第一次渲染 是根据虚拟节点 生成真实节点，替换掉原来的节点
+      vm._prevVnode = vnode
+      // 如果是第二次 生成一个新得虚拟节点 ，和老的虚拟节点进行对比
 
-        if(!preVnode){ // 没有节点就是初次渲染
-            vm.$el = patch(vm.$el, vnode)
-        }else{
-            vm.$el = patch(preVnode, vnode)
-        }
-        
+      if(!preVnode){ // 没有节点就是初次渲染
+          vm.$el = patch(vm.$el, vnode)
+      }else{
+          vm.$el = patch(preVnode, vnode)
+      }
     }
 }
 export function callHook(vm, hook) {

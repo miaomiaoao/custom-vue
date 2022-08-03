@@ -4,7 +4,6 @@
 > 源码层面  initData -> observe -> defineReactive方法 （内部对所有属性进行了重写 性能问题） 递归增加对象中的对象增加getter和setter 
 
 > 我们在使用Vue的时候如果 层级过深（考虑优化） 如果数据不是响应式的就不要放在data中了。 我们属性取值的时候尽量避免多次取值。 如果有些对象是放到data中的但是不是响应式的可以考虑采用Object.freeze() 来冻结对象
-9
 
 ## 2.`Vue`中如何检测数组变化?
 vue2中检测数组的变化并没有采用defineProperty 因为修改索引的情况不多(如果直接使用defineProperty会浪费大量性能)。 采用重写数组的变异方法来实现 （函数劫持）
@@ -122,7 +121,6 @@ Vue.component('my',{
 
 ## 8.`Vue`组件data为什么必须是个函数？
 原因就在于针对根实例而言，new Vue, 组件是通过同一个构造函数多次创建实例，如果是同一个对象的话那么数据会被互相影响。 每个组件的数据源都是独立的，那就每次都调用data返回一个新的对象
-
 ```js
 const Vue = {}
 Vue.extend = function (options) {

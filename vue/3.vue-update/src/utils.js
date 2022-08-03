@@ -53,6 +53,9 @@ lifeCycle.forEach(hook => {
     }
 });
 
+// 如果父亲有 -> 合并，如果儿子有父亲没有 -> 合并 合并是要看是否有这个选项的合并策略
+// 如果有合并策略，使用当前选项的合并策略进行合并
+// 如果没有合并策略，合并后使用儿子的
 export  function mergeOptions(parentVal,childVal){
     const options = {}
     for(let key in parentVal){
@@ -72,8 +75,5 @@ export  function mergeOptions(parentVal,childVal){
             options[key] = childVal[key] || parentVal[key];
         }
     }
-
-
     return options;
-
 }

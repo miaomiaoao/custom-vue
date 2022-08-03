@@ -7,11 +7,6 @@ import { renderMixin } from "./render";
 function Vue(options){
     this._init(options); // 实现vue的初始化功能
 }
-<<<<<<< HEAD
-
-=======
-debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
 initMixin(Vue);
 renderMixin(Vue);
 lifeCycleMixin(Vue)
