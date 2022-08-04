@@ -2,11 +2,7 @@
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Vue = factory());
-<<<<<<< HEAD
-}(this, (function () { 'use strict';
-=======
 })(this, (function () { 'use strict';
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
 
     function isFunction(val) {
       return typeof val == 'function';
@@ -53,7 +49,10 @@
           return parentVal;
         }
       };
-    });
+    }); // 如果父亲有 -> 合并，如果儿子有父亲没有 -> 合并 合并是要看是否有这个选项的合并策略
+    // 如果有合并策略，使用当前选项的合并策略进行合并
+    // 如果没有合并策略，合并后使用儿子的
+
     function mergeOptions(parentVal, childVal) {
       const options = {};
 
@@ -85,6 +84,7 @@
       Vue.options = {}; // 全局属性 , 在每个组件初始化的时候 将这些属性放到每个组件上
 
       Vue.mixin = function (options) {
+        debugger;
         this.options = mergeOptions(this.options, options);
         return this;
       };
@@ -373,12 +373,7 @@
     let pending = false;
     function queueWatcher(watcher) {
       // watcher1 watcher1 watcher1 watcher1  watcher2
-<<<<<<< HEAD
       // 一般情况下 写去重 可以采用这种方式 ，如果你不使用set的时候
-=======
-      debugger; // 一般情况下 写去重 可以采用这种方式 ，如果你不使用set的时候
-
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
       let id = watcher.id;
 
       if (has[id] == null) {
@@ -432,19 +427,11 @@
       update() {
         // 每次更新数据都会同步调用这个update方法，我可以将更新的逻辑缓存起来，等会同步更新数据的逻辑执行完毕后，依次调用 (去重的逻辑)
         console.log('缓存更新');
-<<<<<<< HEAD
-=======
-        debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
         queueWatcher(this); // 可以做异步更新处理
         // this.get(); // vue.nextTick  [fn3]
       }
 
       run() {
-<<<<<<< HEAD
-=======
-        debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
         console.log('真正执行更新');
         this.get(); // render() 取最新的vm上的数据
       }
@@ -494,12 +481,7 @@
     }
 
     function mountComponent(vm) {
-<<<<<<< HEAD
       // 初始化流程
-=======
-      debugger; // 初始化流程
-
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
       let updateComponent = () => {
         vm._update(vm._render()); // render()  _c _v _s
 
@@ -556,14 +538,8 @@
             inserted = args; // 调用push 和 unshift 传递的参数就是新增的逻辑
 
             break;
-<<<<<<< HEAD
         } // inserted[] 遍历数组 看一下它是否需要进行劫持
 
-=======
-        }
-
-        debugger; // inserted[] 遍历数组 看一下它是否需要进行劫持
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
 
         if (inserted) ob.observeArray(inserted);
         ob.dep.notify(); // 触发页面更新流程
@@ -642,10 +618,6 @@
           // 后续会有很多逻辑
           if (Dep.target) {
             // watcher
-<<<<<<< HEAD
-=======
-            debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
             dep.depend();
 
             if (childOb) {
@@ -842,10 +814,6 @@
 
     }
 
-<<<<<<< HEAD
-=======
-    debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
     initMixin(Vue);
     renderMixin(Vue);
     lifeCycleMixin(Vue);
@@ -857,9 +825,5 @@
 
     return Vue;
 
-<<<<<<< HEAD
-})));
-=======
 }));
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
 //# sourceMappingURL=vue.js.map

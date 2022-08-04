@@ -45,10 +45,6 @@ function defineReactive(obj,key,value){ // vue2 慢的原因 主要在这个方�
 
     Object.defineProperty(obj,key,{
         get(){ // 后续会有很多逻辑
-<<<<<<< HEAD
-=======
-          debugger;
->>>>>>> 43f8df6eb3a7fdc3df0436eb8fe03c611b41138d
             if(Dep.target) { // watcher
                 dep.depend();
             }

@@ -1,61 +1,55 @@
-function deepClone(obj, map=new WeakMap()) {
-  if (obj === null) return obj
-  if (obj instanceof Date) return new Date(obj)
-  if (obj instanceof RegExp) return new RegExp(obj)
+// 有效的括号
+// 输入："()" 输出：true
+// 输入："()[]{}" 输出：true
 
-  if (typeof obj !== 'object') return obj
+// 输入："(}" 输出：false
+function isValidChar(str) {
+  if (!str) return true
+  const stack = []
+  const charMap = {
+    '(': ')',
+    '[': ']',
+    '{': '}'
+  }
 
-  if (map.has(obj)) return map.get(obj)
-
-  let cloneObj = new obj.constructor()
-  map.set(obj, cloneObj)
-  for (let key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      cloneObj[key] = deepClone(obj[key], map)
+  for (let i = 0; i < str.length; i++) {
+    let char = str[i]
+    if (char === '(' || char === '[' || char === '{') {
+      stack.push(charMap[char])
+    } else {
+      if (stack.length === 0 || stack.pop() !== char) {
+        return false
+      }
     }
   }
-  return cloneObj
-}
 
-var obj = {
-  a: 1,
-  b: 2,
-  c: {
-    a: 1,
-    b: {
-      a: 1
-    }
-  },
-  e: undefined,
-  d: Symbol('d'),
-  g: []
-}
-obj.f = obj
-var cloneObj = deepClone(obj)
-cloneObj.c.b.a = 3
-console.log(cloneObj)
-console.log(obj.c.b.a)
-
-
-
-function debounce(fn, delay = 3000) {
-  const timer = null, self = this
-  return function(...args) {
-    if (timer) clearTimeout(timer)
-    timer = setTimeout(() => {
-      fn.apply(self, ...args)
-      timer = null
-    }, delay)
+  if (stack.length === 0) {
+    return true
+  } else {
+    return false
   }
 }
 
-function throttle(fn, delay = 3000) {
-  let pre = Date.now()
-  return function(...args) {
-    let cur = Date.now()
-    if (cur - pre > delay) {
-      fn.apply(this, args)
-      pre = now
-    }
-  }
-}
+// k个一组翻转链表
+
+
+// 两个栈实现一个队列
+ var dearr = [1, 2, 3, 4, 5];
+
+ function deArr(arr) {
+   for (var i = 0; i < arr.length; i++) {
+     Object.defineProperty(arr, i, {
+       set: function() {
+         arr[i] = `new${i}`
+         console.log(arr[i])
+       },
+       get: function() {
+        return arr[i]
+       }
+     })
+   }
+   return arr
+ }
+deArr(dearr)
+dearr[1] = 1
+console.log(dearr[1])
