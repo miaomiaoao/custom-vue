@@ -8,7 +8,7 @@
 | 6        | 15                  | [三数之和](https://leetcode-cn.com/problems/3sum)            |      | 中等     | 52       | [题解](https://cuggz.blog.csdn.net/article/details/106596357) | √    |
 | 7        | 121                 | [买卖股票的最佳时机](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock) |      | 容易     | 46       | [题解](https://cuggz.blog.csdn.net/article/details/106699551) | √    |
 | 8        | 1                   | [两数之和](https://leetcode-cn.com/problems/two-sum)         |      | 容易     | 44       | [题解](https://cuggz.blog.csdn.net/article/details/106595078) | √    |
-| 9        | 142                 | [环形链表 II](https://leetcode-cn.com/problems/linked-list-cycle-ii) |      | 中等     | 40       | [题解](https://cuggz.blog.csdn.net/article/details/106699636) |      |
+| 9        | 142                 | [环形链表 II](https://leetcode-cn.com/problems/linked-list-cycle-ii) |      | 中等     | 40       | [题解](https://cuggz.blog.csdn.net/article/details/106699636) | √ |
 | 10       | 94                  | [二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal) |      | 中等     | 34       | [题解](https://cuggz.blog.csdn.net/article/details/105973380) |    √  |
 | 11       | 102                 | [二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal) |      | 中等     | 34       | [题解](https://cuggz.blog.csdn.net/article/details/106008688) |   √   |
 | 12       | 236                 | [二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree) |      | 中等     | 31       | [题解](https://cuggz.blog.csdn.net/article/details/112131073) |  √    |
@@ -46,7 +46,7 @@
 | 44       | 56                  | [合并区间](https://leetcode-cn.com/problems/merge-intervals) |      | 中等     | 15       | [题解](https://cuggz.blog.csdn.net/article/details/108446322) |      |
 | 45       | 101                 | [对称二叉树](https://leetcode-cn.com/problems/symmetric-tree) |      | 容易     | 15       | [题解](https://cuggz.blog.csdn.net/article/details/108091477) |      |
 | 46       | 2                   | [两数相加](https://leetcode-cn.com/problems/add-two-numbers) |      | 中等     | 15       | [题解](https://cuggz.blog.csdn.net/article/details/107872193) |      |
-| 47       | 剑指 Offer 09       | [用两个栈实现队列](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof) |      | 容易     | 15       |                                                              |      |
+| 47       | 剑指 Offer 09       | [用两个栈实现队列](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof) |      | 容易     | 15       |                                                              | √ |
 | 48       | 155                 | [最小栈](https://leetcode-cn.com/problems/min-stack)         |      | 容易     | 14       |                                                              |      |
 | 49       | 300                 | [最长上升子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence) |      | 中等     | 14       | [题解](https://cuggz.blog.csdn.net/article/details/113804861) |      |
 | 50       | 128                 | [最长连续序列](https://leetcode-cn.com/problems/longest-consecutive-sequence) |      | 困难     | 13       | [题解](https://cuggz.blog.csdn.net/article/details/113962133) |      |

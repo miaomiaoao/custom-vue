@@ -1,4 +1,15 @@
+## mvc 和 mvvm
+mvc  model view controller controller负责将model的数据在view中展示出来。controller把model中的数据赋值给view可能会通过dom操作的方式
+
+mvvm model view viewmodel 实现了数据的双向绑定。将模型转换为视图。视图的数据又可以转换为模型数据。(通过dom事件监听)
+
+
+mvc 和 mvvm最大的区别就是实现了view和model的自动同步。还解决了数据频繁更新的问题。
+我们不再需要去操作dom更新数据。
+
+vue不是严格的mvvm模式，因为在严格的mvvm中vue中view和model是不能通信的。但是vue中提供了$refs这个属性。让model可以直接操作view。
 ## 1.请说一下`Vue2`响应式数据的理解  （先知道基本的问题在哪， 源码的角度回答， 你用的时候会有哪些问题）
+数据劫持 + 观察者模式
 可以监控一个数据的修改和获取操作。 针对对象格式会给每个对象的属性进行劫持 Object.defineProperty
 
 > 源码层面  initData -> observe -> defineReactive方法 （内部对所有属性进行了重写 性能问题） 递归增加对象中的对象增加getter和setter 
@@ -69,6 +80,21 @@ mergeOptions 合并策略  循环父亲的所有属性。循环儿子的所有�
 </div>
 
 父 -> 子 -> 子完 -> 父完
+  - 加载渲染过程
+
+  父 beforeCreate->父 created->父 beforeMount->子 beforeCreate->子 created->子 beforeMount->子 mounted->父 mounted
+
+  - 子组件更新过程
+
+  父 beforeUpdate->子 beforeUpdate->子 updated->父 updated
+
+  - 父组件更新过程
+
+  父 beforeUpdate->父 updated
+
+  - 销毁过程
+
+  父 beforeDestroy->子 beforeDestroy->子 destroyed->父 destroyed
 
 ## 6.`Vue`的生命周期方法有哪些？一般在哪一步发送请求及原因
 
@@ -97,6 +123,8 @@ created 执行完之后再执行的mounted 这个时候异步已经在cteated �
 ## 7.`Vue.mixin`的使用场景和原理
 我们可以通过Vue.mixin来实现逻辑的复用, 问题在于数据来源不明确。 声明的时候可能会导致命名冲突。 高阶组件， vue3 采用的就是compositionAPI解决了复用问题
 
+Vue.mixin在组件初始化的时候通过mergeOptions进行合并，采用不同的策略模式对不同的属性进行合并。
+
 ```
 Vue.mixin({
     data(){
@@ -120,7 +148,7 @@ Vue.component('my',{
 > mixin的核心就是合并属性 （内部采用了策略模式进行合并） 全局mixin，局部mixin。 针对不同的属性有不同的合并策略
 
 ## 8.`Vue`组件data为什么必须是个函数？
-原因就在于针对根实例而言，new Vue, 组件是通过同一个构造函数多次创建实例，如果是同一个对象的话那么数据会被互相影响。 每个组件的数据源都是独立的，那就每次都调用data返回一个新的对象
+原因就在于针对根实例而言，new Vue, 组件是通过同一个构造函数多次创建实例，如果是同一个对象的话那么数据会被互相影响，所有实例公用一个data。 每个组件的数据源都是独立的，那就每次都调用data返回一个新的对象
 ```js
 const Vue = {}
 Vue.extend = function (options) {
@@ -150,10 +178,14 @@ nextTick内部采用了异步任务进行了包装 （多个nextTick调用 会�
 这时候用户需要将对应的逻辑放到nextTick中
 
 ## 10.`computed`和`watch`区别
+
+- computed 计算属性，依赖其他值来计算。内部有缓存，只有当依赖的值变化时才会执行。 默认不会立即执行  只有取值的时候才会执行 内部会唯一个dirty属性 来控制依赖的值是否发生变化。 默认计算属性需要同步返回结果 ( 有个包 就是让computed变成异步的)
+- watch 默认用户会提供一个回调函数，数据变化了就调用这个回调。 我们可以监控某个数据的变化 数据变化了执行某些操作
+
+计算属性一般在模板渲染中使用，而watch主要用来观测摸个值变化后，来执行一段复杂的业务逻辑
+
 computed 和 watch的相同点。 底层都会创建一个watcher (用法的区别 computed定义的属性可以在模板中使用,watch不能在视图中使用)
 
-- computed 默认不会立即执行  只有取值的时候才会执行 内部会唯一个dirty属性 来控制依赖的值是否发生变化。 默认计算属性需要同步返回结果 ( 有个包 就是让computed变成异步的)
-- watch 默认用户会提供一个回调函数，数据变化了就调用这个回调。 我们可以监控某个数据的变化 数据变化了执行某些操作
 
 ## 11.`Vue.set`方法是如何实现的
 Vue.set 方法是vue中的一个补丁方法 （正常我们添加属性是不会触发更新的， 我们数组无法监控到索引和长度）
@@ -162,13 +194,48 @@ Vue.set 方法是vue中的一个补丁方法 （正常我们添加属性是不�
  
 >  vue3中也不需要此方法了 (当属性添加或者删除时 手动触发对象本身dep来进行更新)
 
+```
+export function set(target: Array | Object, key: any, val: any): any {
+  // 如果是数组 调用我们重写的splice方法 (这样可以更新视图)
+  if (Array.isArray(target) && isValidArrayIndex(key)) {
+    target.length = Math.max(target.length, key);
+    target.splice(key, 1, val);
+    return val;
+  }
+  // 如果是对象本身的属性，则直接添加即可
+  if (key in target && !(key in Object.prototype)) {
+    target[key] = val;
+    return val;
+  }
+  const ob = (target: any).__ob__;
+
+  // 如果不是响应式的也不需要将其定义成响应式属性
+  if (!ob) {
+    target[key] = val;
+    return val;
+  }
+  // 将属性定义成响应式的
+  defineReactive(ob.value, key, val);
+  // 通知视图更新
+  ob.dep.notify();
+  return val;
+}
+```
+
 ## 12.`Vue`为什么需要虚拟DOM
 
+- 频繁的操作dom会有一定得性能问题。vue2的virtual dom 借鉴了开源库snabbdom的实现。本质是使用原生JS描述dom节点
+
 - 主要这个虚拟dom的好处是什么？  我们写的代码可能要针对不同的平台来使用 （weex，web，小程序） 可以跨平台，不需要考虑平台问题
+  
 - 不用关心兼容性问题， 可以在上层将对应的渲染方法传递给我 ， 我来通过虚拟dom渲染即可
 
 - diff算法 针对更新的时候， 有了虚拟dom之后我们可以通过diff算法来找到最后的差异进行修改真实dom （类似于在真实dom之间做了一个缓存）
 
+
+缺点：
+- 无法进行极致的优化，虽然虚拟dom + 合理化的优化，足以满足绝大部分应用的性能要求。但是在一些性能要求极高的应用中。虚拟dom无法进行针对性的极致优化
+- 首次渲染大量DOM时，由于多了一层虚拟DOM的计算，会比innerHtml插入慢
 
 > 跨平台 、diff算法
 
@@ -223,19 +290,19 @@ Vue中异步组件的写法有很多， 主要用作。大的组件可以异步�
 > React中也区分两种组件 一种叫类组件 ， 一种叫函数式组件  （Sub 就是类组件 有this）  （函数组件 没有类就没有this，也没有所谓的状态，没有生命周期 beforeCreate created...,  好处就是性能好， 不需要创建watcher了）  函数式组件就是调用render拿到返回结果来渲染， 所以性能高
 
 ## 21.Vue组件间传值的方式及之间区别
-- props 父传递数据给儿子  属性的原理就是把解析后的props，验证后就会将属性定义在当前的实例上 vm._props (这个对象上的属性都是通过defineReactive 来定义的 （都是响应式的） 组件在渲染的过程中会去vm上取值 _props 属性会被代理到vm上)
-- emit 儿子触发组件更新  在创建虚拟节点的时候将所有的事件 绑定到了listeners ， 通过$on 方法绑定事件 通过$emit方法来触发事件 (发布订阅模式)
-- events Bus 原理就是 发布订阅模式 $bus = new Vue()   简单的通信可以采用这种方式
-- $parent $children  就是在创造子组件的时候 会将父组件的实例传入。 在组件本身初始化的时候会构建组件间的父子关系 $parent获取父组件的实例，通过$children 可以获取所有的子组件的实例
+1. props 和 $emit 
+  - props 父传递数据给儿子  属性的原理就是把解析后的props，验证后就会将属性定义在当前的实例上 vm._props (这个对象上的属性都是通过defineReactive 来定义的 （都是响应式的） 组件在渲染的过程中会去vm上取值 _props 属性会被代理到vm上)
+  - emit 儿子触发组件更新 $emit触发事件来传递数据  在创建虚拟节点的时候将所有的事件 绑定到了listeners ， 通过$on 方法绑定事件 通过$emit方法来触发事件 (发布订阅模式)
+2. $parent $children  就是在创造子组件的时候 会将父组件的实例传入。 在组件本身初始化的时候会构建组件间的父子关系 $parent获取父组件的实例，通过$children 可以获取所有的子组件的实例
+3. events Bus 原理就是 发布订阅模式 $bus = new Vue() 可以用于兄弟之间传递数据，事件总线  简单的通信可以采用这种方式
 
-- ref  可以获取dom元素和组件的实例  （虚拟dom没有处理ref， 这里无法拿到实例 也无法获取组件） 创建dom的时候如何处理ref的。 会将用户所有的dom操作及属性 都维护到一个cbs属性中 cbs (create update insert destroy....)。 依次调用cbs中create方法。 这里就包含ref相关的操作， 会操作ref 并且赋值
+4. ref  可以获取dom元素和组件的实例  （虚拟dom没有处理ref， 这里无法拿到实例 也无法获取组件） 创建dom的时候如何处理ref的。 会将用户所有的dom操作及属性 都维护到一个cbs属性中 cbs (create update insert destroy....)。 依次调用cbs中create方法。 这里就包含ref相关的操作， 会操作ref 并且赋值
 
--  provide  （在父组件中将属性暴露出来）inject  在后代组件中通过inject注入属性  在父组件中提供数据， 在子组件中递归向上查找
+5. provide  （在父组件中将属性暴露出来）inject  在后代组件中通过inject注入属性  在父组件中提供数据， 在子组件中递归向上查找
 
-- $attrs (所有的组件上的属性 不涵盖props)  $listeners (组件上所有的事件)
-- Vue.observalble 可以创造一个全局的对象用于通信  用的也少
-- vuex
-
+6. $attrs (所有的组件上的属性 不涵盖props)  $listeners (组件上所有的事件)
+7. vuex
+8. Vue.observalble 可以创造一个全局的对象用于通信  用的也少
 
 ## 22.v-if和v-for哪个优先级更高？
 ```js
@@ -247,7 +314,7 @@ function render() {
   }
 }
 ```
-> v-for的优先级更高 ，在编译的时候 会将 v-for 渲染成_l函数  v-if会变成三元表达式。  v-if 和 v-for不要在一起使用。
+> v-for的优先级更高 ，在编译的时候 会将 v-for 渲染成_l函数  v-if会变成三元表达式。先解析v-for再解析v-if。  v-if 和 v-for不要在一起使用。如果需要同时使用，可以考虑写成计算属性
 
 v-if (控制是否渲染)  / v-show(控制的是样式  viisbility:hidden  display:none ?)  v-show=“true"  放在span上会变成块元素吗？  为什么不用  viisbility:hidden?  不能响应事件  (占位的) 为什么比用opacity 呢？ （透明度为0 占位） 可以响应事件的
 
@@ -257,11 +324,14 @@ v-if (控制是否渲染)  / v-show(控制的是样式  viisbility:hidden  displ
 - v-if会被编译成 三元表达式
 - v-for 会被编译成_l 循环
   renderList函数 可能是数字、字符串、数组 直接用for循环拼字符串 如果是对象就用迭代器循环
-- v-model  干什么的？  放在表单元素上可以实现双向绑定 ， 放在组件上就不一样了
-    - v-model 放在不同的元素上会编译出不同的结果，针对文本来说会处理文本 （会被编译成 value + input + 指令处理）  value 和 input实现双向绑定阻止中文的触发  指令作用就是处理中文输入完毕后 手动触发更新.
+- v-model  语法糖  放在表单元素上可以实现双向绑定 ， 放在组件上就不一样了
+    - v-model 放在不同的元素上会编译出不同的结果，针对文本来说会处理文本 （会被编译成 value + input + 指令处理）  value 和 input实现双向绑定阻止中文、日文、韩文的触发， 指令作用就是处理中文输入完毕后 手动触发更新.
     
     - v-model指令内部，针对checkbox、radio、textarea、select等做了特殊处理
-
+      1. textarea 和 text元素使用value property 和 input事件
+      2. checkbox 和 radio使用checked property 和 change事件
+      3. select字段将value作为prop并将change作为事件
+  
     - v-model 绑定到组件上  这里会编译一个 model对象 组件在创建虚拟节点的时候会里有这个 对象。 会看一下里面是否有自定义的prop和event ，如果没有则会被解析成 value + input的语法糖
   
 ```js
@@ -357,7 +427,7 @@ function render() {
 - 1.keep-alive在路由中使用
 - 2.在component:is 中使用  （缓存）
 
-- keep-alive的原理是默认缓存加载过的组件对应的实例 内部采用了LRU算法
+- keep-alive的原理是默认缓存加载过的组件对应的实例 组件切换时，不会对组件卸载 内部采用了LRU算法
 - 下次组件切换加载的时候 此时会找到对应缓存的节点来进行初始化，但是会采用上次缓存$el来触发 （不用在做将虚拟节点转化成真实节点了）  通过init -》 prepatch中了
 - 更新和销毁会触发actived 和 deactived
 
@@ -368,6 +438,25 @@ keep-alive 有 include 和 exclude方法 可以缓存多少组件和排除哪些
 
 
 ## 28.如何理解自定义指令
+指令的本质就是装饰器，vue对html元素的扩展，给html元素增加自定义功能。vue编译dom时，会找到指令对象，执行指令的相关方法
+自定义指令的五个生命周期(钩子函数) bind, inserted, update, componentUpdate, unbind
+
+1. bind：只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
+
+2. inserted：被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+
+3. update：被绑定于元素所在的模板更新时调用，而无论绑定值是否变化。通过比较更新前后的绑定值，可以忽略不必要的模板更新。
+
+4. componentUpdated：被绑定元素所在模板完成一次更新周期时调用。
+
+5. unbind：只调用一次，指令与元素解绑时调用。
+
+原理
+   1. 在生成 ast 语法树时，遇到指令会给当前元素添加 directives 属性
+   2. 通过 genDirectives 生成指令代码
+   3. 在 patch 前将指令的钩子提取到 cbs 中,在 patch 过程中调用对应的钩子
+   4. 当执行指令对应钩子函数时，调用对应指令定义的方法
+
 - 自定义指令就是用户定义好对应的钩子，当元素在不同的状态时会调用对应的钩子 （所有的钩子会被合并到cbs 对应的方法上， 到时候依次调用）
 
 
@@ -388,3 +477,101 @@ keep-alive 有 include 和 exclude方法 可以缓存多少组件和排除哪些
 
 ###  键盘事件 
 - 都是通过模板编译来实现的，没有特殊的
+
+### v-if v-show
+display: none  visibility:hidden  opacity: 0 三者的区别
+- 显示方式：
+  display: none 隐藏之后不显示 visibility:hidden  opacity: 0仍然继续占位
+- 是否继承
+  display: none 不会继承，因为父元素不存在了，子元素也不会显示
+  visibility: hidden 会继承，但是通过 visibility: visible是可以显示出来的
+  opacity: 0 会继承，但不能设置opacity: 1 重新显示
+- 事件绑定
+  display: none 元素不存在了，无事件绑定
+  opacity: 0 有事件绑定
+  visiblity: hidden 无事件绑定
+  这也就是为什么v-show是使用visibility: hidden来实现v-show 而不是使用opacity
+- 过渡动画
+  trasition对于display和visibility:hidden是无效的，但是对于opacity是有效的
+
+### vue的内置指令
+![](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0b46ec8b051246858211c4c7ec129fb3~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+
+### vue3 
+- 响应式实现原理从Object.defineProperty变为Proxy。proxy可以直接监听对象和数组的变化，有多种拦截方式(13种)
+- composition api 组合式api
+- 模板语法变化 slot具名插槽用法  自定义指令v-model升级
+- suspense支持fragmen(多个节点)
+
+### v-for中为什么要使用key 
+因为在diff算法中，使用标签 + key可以判断相同节点。如果是相同节点，可以复用
+key主要为了尽可能的去复用节点，节省性能
+
+
+### vue事件绑定原理
+原生JS中通过addEventListener来给真实元素绑定事件的，vue中绑定事件是通过$on
+如果要在组件上使用原生的事件，需要加.native修饰符。这相当于在父组件中把子组件当做普通html标签，然后加上原生事件
+
+$on，$emit基于发布订阅模式，维护了一个事件中心。$on是订阅者，当emit将事件发布的时候，on去执行中心中执行对应的监视器
+
+### vue-router 路由钩子函数是什么 执行顺序是什么
+路由钩子的执行流程, 钩子函数种类有:全局守卫、路由守卫、组件守卫
+完整的导航解析流程:
+
+1. 导航被触发。
+2. 在失活的组件里调用 beforeRouteLeave 守卫。
+3. 调用全局的 beforeEach 守卫。
+4. 在重用的组件里调用 beforeRouteUpdate 守卫 (2.2+)。
+5. 在路由配置里调用 beforeEnter。
+6. 解析异步路由组件。
+7. 在被激活的组件里调用 beforeRouteEnter。
+8. 调用全局的 beforeResolve 守卫 (2.5+)。
+9. 导航被确认。
+10. 调用全局的 afterEach 钩子。
+11. 触发 DOM 更新。
+12. 调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。
+
+
+### vue-router 组件复用导致路由参数失效怎么办？
+1. 通过watch监听路由参数再发请求
+  ```js
+  watch: { //通过watch来监听路由变化
+    "$route": function(){
+      this.getData(this.$route.params.xxx);
+    }
+  }
+  ```
+2. 通过传入:key阻止路由复用
+```js
+<router-view :key="$route.fullPath" />
+```
+
+### vuex
+vuex是专门为vue提供的状态管理系统，用于多个组件中数据共享，数据缓存等(无法持久化，内部核心原理是通过创建一个全局实例new Vue)
+![](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cb545e2edc0a4dcb94a412db0625799c~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+
+主要包括以下模块：
+- states 定义了应用状态的数据结构，可以在这里设置默认的初始值
+- getters 允许组件从store中获取数据，mapGetters辅助函数将store中的getter映射到局部计算属性
+- mutation 唯一修改store状态的方法，必须是同步函数
+- action 用于提交mutation 不能直接变更状态 可以包括异步操作
+- module 将单一的store拆分为多个store且同时保存在单一的状态树中
+  
+### vuex页面刷新数据丢失怎么办
+做vuex数据持久化，可以使用本地存储方案来保存。或者使用插件 vuex-persist。
+它是为vuex持久化而生的一个插件，不需要手动存储storage
+
+### vuex为什么要分模块并且加命名空间
+模块：由于使用单一状态树，应用的所有状态都会集中到一个比较大的对象中。当应用变得复杂的时候，store对象有可能很臃肿。为了解决以上问题，所以vuex将store分割为模块(module)。每个模块拥有自己的state，mutation，action，getter甚至是嵌套子模块
+
+命名空间：默认情况下，模块内部的action，mutation和getter是注册在全局命名空间中的
+这样使得多个模块能够对同一个mutation或者action做出相应。如果你的模块需要更高的封装度和复用性，你可以通过添加namespaced: true的方式使其成为带命名空间的模块。当模块被注册后，它的所有getter，action以及mutation都会自动根据模块注册的路径调整命名
+
+### vue中的设计模式
+1. 观察者模式(响应式数据)
+2. 发布订阅模式(vue事件机制)
+3. 工厂模式(传入参数即可创建实例)(虚拟dom根据参数的不同，返回基础标签的vnode和组件vnode)
+4. 单例模式(整个程序只有一个实例)(vuex和vue-router的插件注册install方法，判断系统存在实例就直接返回掉)
+5. 策略模式(vue.mixin合并参数使用策略模式)
+6. 装饰器模式
+   
