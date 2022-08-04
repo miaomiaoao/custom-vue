@@ -1,55 +1,61 @@
-function compose(...fns) {
-  if (!fns.length) return v => v
-  if (fns.length === 1) return fns[0]()
+function deepClone(obj, map=new WeakMap()) {
+  if (obj === null) return obj
+  if (obj instanceof Date) return new Date(obj)
+  if (obj instanceof RegExp) return new RegExp(obj)
 
-  // return fns.reduce((pre, cur) => {
-  //   return (...args) => pre(cur(...args))
-  // })
+  if (typeof obj !== 'object') return obj
 
-  return fns.reduce((pre, cur) => {
-    return (...args) => pre(cur(...args))
-  })
+  if (map.has(obj)) return map.get(obj)
+
+  let cloneObj = new obj.constructor()
+  map.set(obj, cloneObj)
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      cloneObj[key] = deepClone(obj[key], map)
+    }
+  }
+  return cloneObj
 }
 
+var obj = {
+  a: 1,
+  b: 2,
+  c: {
+    a: 1,
+    b: {
+      a: 1
+    }
+  },
+  e: undefined,
+  d: Symbol('d'),
+  g: []
+}
+obj.f = obj
+var cloneObj = deepClone(obj)
+cloneObj.c.b.a = 3
+console.log(cloneObj)
+console.log(obj.c.b.a)
 
 
-function fn1(x) {
-  return x + 1
+
+function debounce(fn, delay = 3000) {
+  const timer = null, self = this
+  return function(...args) {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => {
+      fn.apply(self, ...args)
+      timer = null
+    }, delay)
+  }
 }
 
-function fn2(x) {
-  return x + 2
+function throttle(fn, delay = 3000) {
+  let pre = Date.now()
+  return function(...args) {
+    let cur = Date.now()
+    if (cur - pre > delay) {
+      fn.apply(this, args)
+      pre = now
+    }
+  }
 }
-
-function fn3(x) {
-  return x + 3
-}
-
-function fn4(x) {
-  return x + 4
-}
-
-const a = compose(fn1, fn2, fn3, fn4)
-console.log(a(0))
-
-
-// function curry(fn) {
-//   const fnLength = fn.fnLength
-//   const allArgs = []
-//   function calc(...args) {
-//     allArgs = allArgs.concat(args)
-//     if (allArgs.length < fnLength) {
-//       return calc
-//     } else {
-//       fn.apply(this, allArgs.slice(0, fnLength))
-//     }
-//   }
-//   return calc
-// }
-
-// function add(a, b, c) {
-//   return a + b + c
-// }
-
-// const curryAdd = curry(add)
-// curryAdd(1)(2)(3)
