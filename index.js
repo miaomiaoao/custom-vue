@@ -89,3 +89,8 @@ function lengthOfStr(str) {
     right++
   }
 }
+
+
+Promise.all([1, 2, 3]).then(res => {
+  console.log(res)
+})

@@ -145,9 +145,14 @@ class myPromise {
   /**
    * all方法接收一个可迭代(iterable)的类型(Array,Map,Set)
    * 并且返回一个promise实例
+   * 
+   * 需要判断传入的是否是一个数组，如果不是数组的话，要注意抛出异常
+   * 
+   * 传入的参数要判断是否是promise对象，如果不是就直接返回值，如果是要等待promise解决完成之后
+   * 
+   * 再返回值
    */
   static all(promises) {
-    console.log('promise all')
     return new myPromise((resolve, reject) => {
       if(Array.isArray(promises)) {
 
