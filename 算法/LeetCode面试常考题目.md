@@ -21,25 +21,25 @@
 | 19       | 20                  | [有效的括号](https://leetcode-cn.com/problems/valid-parentheses) |      | 容易     | 25       | [题解](https://cuggz.blog.csdn.net/article/details/106726181) |   √   |
 | 20       | 53                  | [最大子序和](https://leetcode-cn.com/problems/maximum-subarray) |      | 容易     | 25       | [题解](https://cuggz.blog.csdn.net/article/details/112131118) |  √    |
 | 21       | 92                  | [反转链表 II](https://leetcode-cn.com/problems/reverse-linked-list-ii) |      | 中等     | 24       | [题解](https://cuggz.blog.csdn.net/article/details/106677585) |  √    |
-| 22       | 141                 | [环形链表](https://leetcode-cn.com/problems/linked-list-cycle) |      | 容易     | 23       | [题解](https://cuggz.blog.csdn.net/article/details/106699551) |      |
+| 22       | 141                 | [环形链表](https://leetcode-cn.com/problems/linked-list-cycle) |      | 容易     | 23       | [题解](https://cuggz.blog.csdn.net/article/details/106699551) | √ |
 | 23       | 543                 | [二叉树的直径](https://leetcode-cn.com/problems/diameter-of-binary-tree) |      | 容易     | 23       | [题解](https://cuggz.blog.csdn.net/article/details/112134776) |   √   |
 | 24       | 104                 | [二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree) |      | 容易     | 22       | [题解](https://cuggz.blog.csdn.net/article/details/106009246) |  √    |
 | 25       | 69                  | [x 的平方根](https://leetcode-cn.com/problems/sqrtx)         |      | 容易     | 21       | [题解](https://cuggz.blog.csdn.net/article/details/108656803) |  √    |
-| 26       | 88                  | [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array) |      | 容易     | 21       | [题解](https://cuggz.blog.csdn.net/article/details/106595622) |      |
-| 27       | 110                 | [平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree) |      | 容易     | 21       | [题解](https://cuggz.blog.csdn.net/article/details/107151605) |      |
-| 28       | 54                  | [螺旋矩阵](https://leetcode-cn.com/problems/spiral-matrix)   |      | 中等     | 20       | [题解](https://cuggz.blog.csdn.net/article/details/112137715) |      |
-| 29       | 113                 | [路径总和 II](https://leetcode-cn.com/problems/path-sum-ii)  |      | 中等     | 20       | [题解](https://cuggz.blog.csdn.net/article/details/108458113) |      |
-| 30       | 98                  | [验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree) |      | 中等     | 20       | [题解](https://cuggz.blog.csdn.net/article/details/106980295) |      |
-| 31       | 42                  | [接雨水](https://leetcode-cn.com/problems/trapping-rain-water) |      | 困难     | 20       | [题解](https://cuggz.blog.csdn.net/article/details/112254417) |      |
-| 32       | 124                 | [二叉树中的最大路径和](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum) |      | 困难     | 20       | [题解](https://cuggz.blog.csdn.net/article/details/112255014) |      |
-| 33       | 105                 | [从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal) |      | 中等     | 19       | [题解](https://cuggz.blog.csdn.net/article/details/108176121) |      |
-| 34       | 151                 | [翻转字符串里的单词](https://leetcode-cn.com/problems/reverse-words-in-a-string) |      | 中等     | 18       | [题解](https://cuggz.blog.csdn.net/article/details/112210308) |      |
-| 35       | 234                 | [回文链表](https://leetcode-cn.com/problems/palindrome-linked-list) |      | 容易     | 18       | [题解](https://cuggz.blog.csdn.net/article/details/108040927) |      |
+| 26       | 88                  | [合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array) |      | 容易     | 21       | [题解](https://cuggz.blog.csdn.net/article/details/106595622) | √ |
+| 27       | 110                 | [平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree) |      | 容易     | 21       | [题解](https://cuggz.blog.csdn.net/article/details/107151605) | √ |
+| 28       | 54                  | [螺旋矩阵](https://leetcode-cn.com/problems/spiral-matrix)   |      | 中等     | 20       | [题解](https://cuggz.blog.csdn.net/article/details/112137715) | √ |
+| 29       | 113                 | [路径总和 II](https://leetcode-cn.com/problems/path-sum-ii)  |      | 中等     | 20       | [题解](https://cuggz.blog.csdn.net/article/details/108458113) | √ |
+| 30       | 98                  | [验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree) |      | 中等     | 20       | [题解](https://cuggz.blog.csdn.net/article/details/106980295) | √ |
+| 31       | 42                  | [接雨水](https://leetcode-cn.com/problems/trapping-rain-water) |      | 困难     | 20       | [题解](https://cuggz.blog.csdn.net/article/details/112254417) | √ |
+| 32       | 124                 | [二叉树中的最大路径和](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum) |      | 困难     | 20       | [题解](https://cuggz.blog.csdn.net/article/details/112255014) | √ |
+| 33       | 105                 | [从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal) |      | 中等     | 19       | [题解](https://cuggz.blog.csdn.net/article/details/108176121) | √ |
+| 34       | 151                 | [翻转字符串里的单词](https://leetcode-cn.com/problems/reverse-words-in-a-string) |      | 中等     | 18       | [题解](https://cuggz.blog.csdn.net/article/details/112210308) | √ |
+| 35       | 234                 | [回文链表](https://leetcode-cn.com/problems/palindrome-linked-list) |      | 容易     | 18       | [题解](https://cuggz.blog.csdn.net/article/details/108040927) | √ |
 | 36       | 33                  | [搜索旋转排序数组](https://leetcode-cn.com/problems/search-in-rotated-sorted-array) |      | 中等     | 18       | [题解](https://cuggz.blog.csdn.net/article/details/108452058) |      |
 | 37       | 48                  | [旋转图像](https://leetcode-cn.com/problems/rotate-image)    |      | 中等     | 17       | [题解](https://cuggz.blog.csdn.net/article/details/112446655) |      |
 | 38       | 剑指 Offer 22       | [链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof) |      | 容易     | 16       | [题解](https://cuggz.blog.csdn.net/article/details/113804214) |      |
 | 39       | 5                   | [最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring) |      | 中等     | 16       | [题解](https://cuggz.blog.csdn.net/article/details/106775026) |      |
-| 40       | 144                 | [二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal) |      | 中等     | 16       | [题解](https://cuggz.blog.csdn.net/article/details/105970362) |      |
+| 40       | 144                 | [二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal) |      | 中等     | 16       | [题解](https://cuggz.blog.csdn.net/article/details/105970362) | √ |
 | 41       | 232                 | [用栈实现队列](https://leetcode-cn.com/problems/implement-queue-using-stacks) |      | 容易     | 16       |                                                              |      |
 | 42       | 240                 | [搜索二维矩阵 II](https://leetcode-cn.com/problems/search-a-2d-matrix-ii) |      | 中等     | 15       | [题解](https://cuggz.blog.csdn.net/article/details/113804527) |      |
 | 43       | 23                  | [合并K个排序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists) |      | 困难     | 15       | [题解](https://cuggz.blog.csdn.net/article/details/108446322) |      |
@@ -51,7 +51,7 @@
 | 49       | 300                 | [最长上升子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence) |      | 中等     | 14       | [题解](https://cuggz.blog.csdn.net/article/details/113804861) |      |
 | 50       | 128                 | [最长连续序列](https://leetcode-cn.com/problems/longest-consecutive-sequence) |      | 困难     | 13       | [题解](https://cuggz.blog.csdn.net/article/details/113962133) |      |
 | 51       | 46                  | [全排列](https://leetcode-cn.com/problems/permutations)      |      | 中等     | 13       | [题解](https://cuggz.blog.csdn.net/article/details/108549192) |      |
-| 52       | 70                  | [爬楼梯](https://leetcode-cn.com/problems/climbing-stairs)   |      | 容易     | 13       | [题解](https://cuggz.blog.csdn.net/article/details/113873250) |      |
+| 52       | 70                  | [爬楼梯](https://leetcode-cn.com/problems/climbing-stairs)   |      | 容易     | 13       | [题解](https://cuggz.blog.csdn.net/article/details/113873250) | √ |
 | 53       | 62                  | [不同路径](https://leetcode-cn.com/problems/unique-paths)    |      | 中等     | 13       | [题解](https://cuggz.blog.csdn.net/article/details/113873798) |      |
 | 54       | 剑指 Offer 21       | [调整数组顺序使奇数位于偶数前面](https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof) |      | 容易     | 12       | [题解](https://cuggz.blog.csdn.net/article/details/114108941) |      |
 | 55       | 93                  | [复原IP地址](https://leetcode-cn.com/problems/restore-ip-addresses) |      | 中等     | 12       | [题解](https://cuggz.blog.csdn.net/article/details/113965009) |      |

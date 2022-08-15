@@ -32,3 +32,5 @@
 
   return result
 }
+
+console.log(lengthOfLongestSubstring('abcabcbb'))

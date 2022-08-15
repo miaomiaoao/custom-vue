@@ -6,8 +6,7 @@
 
 
 function isPalindrome(head) {
-  let a = '',
-    b = ''
+  let a = '',  b = ''
   while (head) {
     const val = head.val
     a = a + val

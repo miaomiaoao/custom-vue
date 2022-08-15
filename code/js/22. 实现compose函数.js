@@ -2,7 +2,7 @@ function compose(...fns) {
   if (!fns.length) return v => v
   if (fns.length === 1) return fns[0]
   return fns.reduce((pre, cur) => {
-    return (...args) => pre(cur(...args))
+    return (...args) => cur(pre(...args))
   })
 }
 function fn1(x) {
