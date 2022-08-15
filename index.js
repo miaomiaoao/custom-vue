@@ -1,55 +1,18 @@
-// 有效的括号
-// 输入："()" 输出：true
-// 输入："()[]{}" 输出：true
-
-// 输入："(}" 输出：false
-function isValidChar(str) {
-  if (!str) return true
-  const stack = []
-  const charMap = {
-    '(': ')',
-    '[': ']',
-    '{': '}'
-  }
-
-  for (let i = 0; i < str.length; i++) {
-    let char = str[i]
-    if (char === '(' || char === '[' || char === '{') {
-      stack.push(charMap[char])
-    } else {
-      if (stack.length === 0 || stack.pop() !== char) {
-        return false
+function ajax(url) {
+  return new Promise((resolve, rejecct) => {
+    let xhr = new XMLHttpRequest()
+    xhr.open('GET', url, false) // 第三个参数是同步请求还是异步请求
+    xhr.setRequestHeader('Content-type', '/json')
+    xhr.onreadystatechange=function() {
+      if (xhr.readyState !== 4) return false
+      if (xhr.status === 200 || xhr.status === 304) {
+        resolve(xhr.responseText)
+      } else {
+        rejecct(xhr.responseText)
       }
     }
-  }
-
-  if (stack.length === 0) {
-    return true
-  } else {
-    return false
-  }
+    xhr.send()
+  })
+  
 }
 
-// k个一组翻转链表
-
-
-// 两个栈实现一个队列
- var dearr = [1, 2, 3, 4, 5];
-
- function deArr(arr) {
-   for (var i = 0; i < arr.length; i++) {
-     Object.defineProperty(arr, i, {
-       set: function() {
-         arr[i] = `new${i}`
-         console.log(arr[i])
-       },
-       get: function() {
-        return arr[i]
-       }
-     })
-   }
-   return arr
- }
-deArr(dearr)
-dearr[1] = 1
-console.log(dearr[1])

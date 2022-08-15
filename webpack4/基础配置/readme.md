@@ -12,7 +12,8 @@ module.exports = {
   }
 }
 ```
-
+### plugin 
+插件可以注入到每个环节，每个步骤中去
 ## html文件
 添加html文件，使打包后在html文件中可以直接引入打包后的js。
 引入插件html-webpack-plugin,配置plugin
@@ -36,6 +37,8 @@ module.exports = {
   ]
 }
 ```
+### loader
+loader让webpack能够处理其他类型的文件，并将它们转换为有效模块，以供应用程序使用，以及被添加到依赖图中
 
 ## css
   ### 解析css文件
@@ -120,6 +123,9 @@ module.exports = {
   style-loader是将生成的css文件插入到head中,我们现在需要生成单独的css文件，通过使用link标签，将css引入 
 
   添加min-css-extract-plugin插件
+
+  style-loader就是将CSS转换成JS脚本，JS脚本的作用就是向页面中插入一个style标签，标签的
+  内容就是CSS
 
   ```js
   const path = require('path')
@@ -214,7 +220,10 @@ module.exports = {
 项目中使用图片的方式:
 1. html中使用img src
 2. css
+3. file-loader 解决css等文件中引入图片路径问题
+4. url-loader 当图片小于limit的时候，会把图片BASE64编码，大于limit值的时候还是使用file-loader进行拷贝
 
+5. 在webpack5中 filer-loader url-loader html-loader已经废弃了，但是原理还是相同的 webpack5中用的是xxx-resource 
 ```js
 module.exports = {
   module: {
@@ -223,14 +232,28 @@ module.exports = {
         test:/\.html$/,
         use:'html-withimg-loader'
       },
+      // 生成一个新的文件名，拷贝到dist目录中去
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            esModule: false // 如果为true，default是它的地址，如果esModule为false的话直接返回地址
+            name: '[hash:10].[ext]' // ext 原来的扩展名 hash取前十位
+          }
+        }
+      },
       {
         test:/\.(png|jpg|gif)$/,
         // 做一个限制 当我们的图片 小于多少k的时候 用base64 来转化
         // 否则用file-loader产生真实的图片
+        // 在webpack5中，打包时会读取dist目录的结构，如果内容没变化(比如图片未更新) 会直接读取缓存
+        // 这个是webpack5的新特性，webpack5性能提升的关键就是靠这个缓存
+        // webpack5比webpack4性能提升70% - 80% 性能提升很大
         use:{
           loader: 'url-loader',
           options:{
-            limit:1,
+            limit: 8 * 1024, // 以8k为分界值
             outputPath:'/img/',
             publicPath:'http://www.zhufengpeixun.cn'
           }

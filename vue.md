@@ -464,21 +464,21 @@ keep-alive 有 include 和 exclude方法 可以缓存多少组件和排除哪些
 - 实现主要靠的是模板编译原理   addEventListener( stop , defaultPrevent  ) self capture passvie once
 - .number
 
-### 编译的时候直接编译到事件内部了
+## 编译的时候直接编译到事件内部了
 - <div @click.prevent></div>
 - <div @click.stop></div> 
 
 
-### 编译的时候增加标识  !~&
+## 编译的时候增加标识  !~&
 - <div @click.passive></div>
 - <div @click.capture></div>
 - <div @click.one></div>
 
 
-###  键盘事件 
+##  键盘事件 
 - 都是通过模板编译来实现的，没有特殊的
 
-### v-if v-show
+## v-if v-show
 display: none  visibility:hidden  opacity: 0 三者的区别
 - 显示方式：
   display: none 隐藏之后不显示 visibility:hidden  opacity: 0仍然继续占位
@@ -494,27 +494,27 @@ display: none  visibility:hidden  opacity: 0 三者的区别
 - 过渡动画
   trasition对于display和visibility:hidden是无效的，但是对于opacity是有效的
 
-### vue的内置指令
+## vue的内置指令
 ![](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0b46ec8b051246858211c4c7ec129fb3~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
 
-### vue3 
+## vue3 
 - 响应式实现原理从Object.defineProperty变为Proxy。proxy可以直接监听对象和数组的变化，有多种拦截方式(13种)
 - composition api 组合式api
 - 模板语法变化 slot具名插槽用法  自定义指令v-model升级
 - suspense支持fragmen(多个节点)
 
-### v-for中为什么要使用key 
+## v-for中为什么要使用key 
 因为在diff算法中，使用标签 + key可以判断相同节点。如果是相同节点，可以复用
 key主要为了尽可能的去复用节点，节省性能
 
 
-### vue事件绑定原理
+## vue事件绑定原理
 原生JS中通过addEventListener来给真实元素绑定事件的，vue中绑定事件是通过$on
 如果要在组件上使用原生的事件，需要加.native修饰符。这相当于在父组件中把子组件当做普通html标签，然后加上原生事件
 
 $on，$emit基于发布订阅模式，维护了一个事件中心。$on是订阅者，当emit将事件发布的时候，on去执行中心中执行对应的监视器
 
-### vue-router 路由钩子函数是什么 执行顺序是什么
+## vue-router 路由钩子函数是什么 执行顺序是什么
 路由钩子的执行流程, 钩子函数种类有:全局守卫、路由守卫、组件守卫
 完整的导航解析流程:
 
@@ -532,7 +532,7 @@ $on，$emit基于发布订阅模式，维护了一个事件中心。$on是订阅
 12. 调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。
 
 
-### vue-router 组件复用导致路由参数失效怎么办？
+## vue-router 组件复用导致路由参数失效怎么办？
 1. 通过watch监听路由参数再发请求
   ```js
   watch: { //通过watch来监听路由变化
@@ -546,7 +546,7 @@ $on，$emit基于发布订阅模式，维护了一个事件中心。$on是订阅
 <router-view :key="$route.fullPath" />
 ```
 
-### vuex
+## vuex
 vuex是专门为vue提供的状态管理系统，用于多个组件中数据共享，数据缓存等(无法持久化，内部核心原理是通过创建一个全局实例new Vue)
 ![](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cb545e2edc0a4dcb94a412db0625799c~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
 
@@ -557,17 +557,17 @@ vuex是专门为vue提供的状态管理系统，用于多个组件中数据共�
 - action 用于提交mutation 不能直接变更状态 可以包括异步操作
 - module 将单一的store拆分为多个store且同时保存在单一的状态树中
   
-### vuex页面刷新数据丢失怎么办
+## vuex页面刷新数据丢失怎么办
 做vuex数据持久化，可以使用本地存储方案来保存。或者使用插件 vuex-persist。
 它是为vuex持久化而生的一个插件，不需要手动存储storage
 
-### vuex为什么要分模块并且加命名空间
+## vuex为什么要分模块并且加命名空间
 模块：由于使用单一状态树，应用的所有状态都会集中到一个比较大的对象中。当应用变得复杂的时候，store对象有可能很臃肿。为了解决以上问题，所以vuex将store分割为模块(module)。每个模块拥有自己的state，mutation，action，getter甚至是嵌套子模块
 
 命名空间：默认情况下，模块内部的action，mutation和getter是注册在全局命名空间中的
 这样使得多个模块能够对同一个mutation或者action做出相应。如果你的模块需要更高的封装度和复用性，你可以通过添加namespaced: true的方式使其成为带命名空间的模块。当模块被注册后，它的所有getter，action以及mutation都会自动根据模块注册的路径调整命名
 
-### vue中的设计模式
+## vue中的设计模式
 1. 观察者模式(响应式数据)
 2. 发布订阅模式(vue事件机制)
 3. 工厂模式(传入参数即可创建实例)(虚拟dom根据参数的不同，返回基础标签的vnode和组件vnode)
