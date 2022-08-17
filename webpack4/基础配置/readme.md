@@ -12,11 +12,36 @@ module.exports = {
   }
 }
 ```
-### plugin 
+## 开发服务器 devServer
+
+webpack.config.js
+
+```js
+module.exports = {
+  devServer: {
+    static: path.resolve(__dirname, 'public'),
+    port: 8080,
+    open: true // 是否自动打开
+  }
+}
+```
+
+package.json
+
+```js
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack serve"
+  }
+```
+
+## plugin 
+
 插件可以注入到每个环节，每个步骤中去
-## html文件
+### html文件
 添加html文件，使打包后在html文件中可以直接引入打包后的js。
 引入插件html-webpack-plugin,配置plugin
+
 ```js
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -37,7 +62,7 @@ module.exports = {
   ]
 }
 ```
-### loader
+## loader
 loader让webpack能够处理其他类型的文件，并将它们转换为有效模块，以供应用程序使用，以及被添加到依赖图中
 
 ## css
@@ -76,7 +101,7 @@ loader让webpack能够处理其他类型的文件，并将它们转换为有效�
     ]
   }
   ```
-   
+
   ### 解析less
    ```js
     const path = require('path')
@@ -116,7 +141,7 @@ loader让webpack能够处理其他类型的文件，并将它们转换为有效�
         })
       ]
     }
-  ```
+   ```
   ### css打包
 
   此时css虽然样式会生效，但是不会生成一个单独的css文件
@@ -181,6 +206,9 @@ loader让webpack能够处理其他类型的文件，并将它们转换为有效�
   ### css3自动加浏览器前缀
   安装插件postcss-loader autoprefixer
   新建postcss.config.js文件,配置
+
+  postcss-preset-env 包含了autoprefixer 和 browsers选项	
+
   ```js
     const autoprefixer = require('autoprefixer')
 
@@ -209,19 +237,39 @@ loader让webpack能够处理其他类型的文件，并将它们转换为有效�
     }
   ```
 
+postcss-preset-env用法
+
+```js
+let postcssPresetEnv = require('postcss-preset-env')
+module.exports = {
+    plugins: [postcssPresetEnv({
+        browsers: 'last 5 version'
+    })]
+}
+```
+
+
+
   ### px自动转成rem
+
   lib-flexible + rem 实现移动端自适应
   px2rem-loader 自动将px转换为rem
   px2rem
   页面渲染时计算根元素的font-size值
-  
+
 
 ## 图片
 项目中使用图片的方式:
+
 1. html中使用img src
+
 2. css
-3. file-loader 解决css等文件中引入图片路径问题
+
+3. file-loader 解决css等文件中引入图片路径问题, 发送一个单独文件并导出url
+
 4. url-loader 当图片小于limit的时候，会把图片BASE64编码，大于limit值的时候还是使用file-loader进行拷贝
+
+   导出一个资源的 data URI
 
 5. 在webpack5中 filer-loader url-loader html-loader已经废弃了，但是原理还是相同的 webpack5中用的是xxx-resource 
 ```js
@@ -264,8 +312,15 @@ module.exports = {
 }
 ```
 
+
 ## es6或者更高级的语法转换成es5
-babel 可以实现代码的转换
+
+babel 其实是一个编辑JS的平台，可以实现代码的转换ES6/ES7 转换为ES5
+
+#### preset-env
+
+Babel默认只转换新的最新ES语法，比如箭头函数
+
 安装了babel @babel/core @babel/preset-env babel-loader  
 
 @babel/core虽然可以识别JS代码，但是不知道如何转换。但是插件知道ES6语法很多，把识别ES6代码的插件打包，就形成了preset(预设)
@@ -320,3 +375,77 @@ webpack打包出来的chunk-vendors 一般都放一些第三方库
 
 ## external 
 排除一些第三方模块，防止一些第三方库打包到bundle中
+
+
+
+## sourcemap
+
+| 关键字     | 含义                                                         |
+| ---------- | ------------------------------------------------------------ |
+| eval       | 使用eval包裹代码块                                           |
+| source-map | 产生.map文件                                                 |
+| cheap      | 只包含行，不包含列信息(关于列信息的解释下面会有详细介绍)也不包含loader的sourcemap |
+| module     | 包含loader的sourcemap（比如jsx to js， babel的sourcemap） 否则无法定义源文件 |
+| inline     | 将.map作为Data URL嵌入，不生成单独的.map文件                 |
+
+eval 为了方便缓存
+
+new Function() 和 eval()的区别
+
+new Function() 定义一个函数 eval()执行一段代码
+
+webpack.config.js
+
+```js
+// 组合规则
+// [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map
+module.exports = {
+    devtool: 'source-map', // 单独在外部生成完整的sourcemap文件，并且在目标文件里建立关联，能提示错误代码的准确原始位置。最完整的，也是最慢的
+    devtool: 'inline-source-map', // 以base64格式内联在打包后的文件中，内联构建速度快，也能提示错误代码的准确原始位置
+    devtool: 'hidden-source-map', // 会在外部生成sourcemap，但是目标文件里没有建立关联(main.js没有到.map文件的映射信息)，不能提示错误代码的准确原始位置
+    devtool: 'eval-source-map', // 会为每一个模块生成一个单独的sourcemap文件进行内联，并用eval执行
+    devtool: 'nosources-source-map', // 也会在外部生成sourcemap文件，能找到原始代码位置，但源代码内容为空 
+    devtool: 'cheap-module-eval-source-map',
+    devtool: 'cheap-eval-source-map',
+    devtool: 'eval',
+    devtool: 'cheap-source-map', // 外部生成sourcemap文件，不包含列和loader的map
+    devtool: 'cheap-module-source-map' // 外部生成sourcemap文件，不包含列的信息但包含loader的map
+}
+```
+
+
+
+es6代码生成source-map的过程
+
+- 首先es6代码会使用babel-loader转换为es5版本的代码(此过程会生成一个babel-souce-map)
+- es5版本的代码经过webpack打包，生成main.js （此过程会生成一个webpack sourcemap）
+- 上面说的包含loader的sourmap就是第一个生成的sourcemap
+
+### sourcemap最佳事件
+
+####    开发环境
+
+- 开发环境对sourcemap的要求：速度快，调试更友好
+
+- 速度快，推荐eval-cheap-source-map
+
+- 调试更友好 cheap-module-source-map
+
+- 这种选择 eval-source-map
+
+  
+
+  
+
+#### 生产环境
+
+- 首先排除内联，因为一方面我们隐藏了源代码，另一方面要减少体积
+
+- 友好调试  sourcemap > cheap-source-map > cheap-module-source-map > hidden-source-map/nosources-sourcemap
+
+- 要想速度快，优先选择cheap
+
+- 这种选择 hidden-source-map
+
+
+
