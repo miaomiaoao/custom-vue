@@ -1,13 +1,4 @@
-## mvc 和 mvvm
-mvc  model view controller controller负责将model的数据在view中展示出来。controller把model中的数据赋值给view可能会通过dom操作的方式
 
-mvvm model view viewmodel 实现了数据的双向绑定。将模型转换为视图。视图的数据又可以转换为模型数据。(通过dom事件监听)
-
-
-mvc 和 mvvm最大的区别就是实现了view和model的自动同步。还解决了数据频繁更新的问题。
-我们不再需要去操作dom更新数据。
-
-vue不是严格的mvvm模式，因为在严格的mvvm中vue中view和model是不能通信的。但是vue中提供了$refs这个属性。让model可以直接操作view。
 ## 1.请说一下`Vue2`响应式数据的理解  （先知道基本的问题在哪， 源码的角度回答， 你用的时候会有哪些问题）
 数据劫持 + 观察者模式
 可以监控一个数据的修改和获取操作。 针对对象格式会给每个对象的属性进行劫持 Object.defineProperty
