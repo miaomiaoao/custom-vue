@@ -14,11 +14,12 @@ function flushCallbacks(){
     waiting = false;
 }
 export function nextTick(fn){ // vue3 里面的nextTick 就是promise ， vue2里面做了一些兼容性处理
-    callbacks.push(fn);
-    if(!waiting){
-        Promise.resolve().then(flushCallbacks);
-        waiting = true
-    }
+  debugger;
+  callbacks.push(fn);
+  if(!waiting){
+      Promise.resolve().then(flushCallbacks);
+      waiting = true
+  }
 }
 
 
