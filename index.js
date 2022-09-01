@@ -1,30 +1,37 @@
-function debounce(fn, delay) {
-  if (typeof fn !== 'function' || fn === null) {
-    throw new Error('类型错误')
+class eventEmitter {
+  constructor() {
+    this.events = {}
   }
 
-  if (typeof delay !== 'number') {
-    throw new Error('第二个参数类型错误')
+
+  on(type, fn) {
+    if (!this.events[type]) {
+      this.events[type] = [fn]
+    } else {
+      this.events[type].push(fn)
+    }
   }
 
-  let timer = null
-  return function(...args) {
-    if (timer) clearTimeout(timer)
-    timer = setTimeout(() => {
-      fn.apply(this, args)
-      timer = null
-    }, delay)
+  emit(type, ...rest) {
+    this.events[type] && this.events[type].forEach(fn => fn.apply(this, rest))
+  }
+
+  once() {
+
+  }
+
+  off(type, fn) {
+    if (this.events[type]) {
+      this.events[type] = this.events.filter(item => {
+        item !== fn
+      })
+    }
   }
 }
 
-function log() {
-  console.log('1111')
-}
-
-const logDebounce = debounce(log, 2000)
-logDebounce()
-logDebounce()
-logDebounce()
-logDebounce()
-logDebounce()
-logDebounce()
+const eventBus = new eventEmitter()
+eventBus.on('click', function(args) {
+  console.log(args)
+  console.log('click方法执行')
+})
+eventBus.emit('click', 'aaaa')

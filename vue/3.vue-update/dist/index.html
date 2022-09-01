@@ -43,6 +43,11 @@
         });
 
         vm.arr.push({ name: 'tc' }) 
+        vm.arr.push({ name: 'xx' })
+        vm.arr.push({ name: 'xxxx' })
+        vm.$nextTick(() => {
+          console.log('1111')
+        })
         console.log(vm.$options)
     </script>
 </body>
